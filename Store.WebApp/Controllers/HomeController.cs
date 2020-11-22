@@ -15,8 +15,6 @@ namespace Store.WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private Session _session;
-
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -24,7 +22,7 @@ namespace Store.WebApp.Controllers
 
         public IActionResult Index()
         {
-            return View(new IndexViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier } (_session));
+            return View();
         }
 
         public IActionResult Privacy()
