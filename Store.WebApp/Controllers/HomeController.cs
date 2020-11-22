@@ -6,25 +6,37 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.WebApp.Models;
-
-using Store;
+using Store.DataModel;
 
 namespace Store.WebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private Session _session;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, Session session)
         {
             _logger = logger;
+            _session = session;
         }
 
         public IActionResult Index()
         {
             return View();
         }
-
+        public IActionResult AddCustomer()
+        {
+            return View(new SessionViewModel { Session = _session, RequestId = Activity.Current?.Id });
+        }
+        public IActionResult AddOrder()
+        {
+            return View(new SessionViewModel { Session = _session, RequestId = Activity.Current?.Id });
+        }
+        public IActionResult SearchOrders()
+        {
+            return View(new SessionViewModel { Session = _session, RequestId = Activity.Current?.Id });
+        }
         public IActionResult Privacy()
         {
             return View();

@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Store;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace Store.DataModel
 {
@@ -19,7 +16,21 @@ namespace Store.DataModel
             get
             {
                 using var context = new Project1Context(_options);
-                return context.Orders.AsQueryable();
+                return context.Orders
+                .Include(x => x.Customer)
+                .Include(x => x.Location)
+                .Include(x => x.OrderItems)
+                .AsQueryable();
+            }
+        }
+        public IQueryable<ILocation> Locations 
+        { 
+            get 
+            {
+                using var context = new Project1Context(_options);
+                return context.Locations
+                .Include(x => x.LocationItems)
+                .AsQueryable();
             }
         }
         public IQueryable<ICustomer> Customers 
@@ -28,14 +39,6 @@ namespace Store.DataModel
             {
                 using var context = new Project1Context(_options);
                 return context.Customers.AsQueryable();
-            }
-        }
-        public IQueryable<ILocation> Locations 
-        { 
-            get 
-            {
-                using var context = new Project1Context(_options);
-                return context.Locations.AsQueryable();
             }
         }
         public IQueryable<IItem> Items 
@@ -103,12 +106,12 @@ namespace Store.DataModel
 
         public IEnumerable<IOrder> OrderHistory(ILocation location)
         {
-            return (IEnumerable<IOrder>) Orders.Where(x => x.LocationId == location.Id).ToList();
+            return Orders.Where(x => x.LocationId == location.Id).ToList();
         }
 
         public IEnumerable<IOrder> OrderHistory(ICustomer customer)
         {
-            return (IEnumerable<IOrder>) Orders.Where(x => x.CustomerId == customer.Id).ToList();
+            return Orders.Where(x => x.CustomerId == customer.Id).ToList();
         }
     }
     public partial class Item : IItem {}
@@ -122,7 +125,7 @@ namespace Store.DataModel
             get 
             { 
                 var orderItemsDict = new Dictionary<int,int>();
-                foreach (var io in this.OrderItems) orderItemsDict.Add(io.Item.Id, io.ItemCount);
+                foreach (var io in OrderItems) orderItemsDict.Add(io.Item.Id, io.ItemCount);
                 return orderItemsDict;
             }
         }
@@ -134,7 +137,7 @@ namespace Store.DataModel
                 get
                 { 
                     var locationItemsDict = new Dictionary<int,int>();
-                    foreach (var io in this.LocationItems) locationItemsDict.Add(io.Item.Id, io.ItemCount);
+                    foreach (var io in LocationItems) locationItemsDict.Add(io.Item.Id, io.ItemCount);
                     return locationItemsDict;
                 } 
             }
