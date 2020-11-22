@@ -4,10 +4,13 @@ namespace Store.DataModel
 {
     public partial class Item
     {
+        private int id;
+        private string name;
+
         // [Key]
         // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id {get; set; }
+        public int Id { get => id; set => id = value; }
         [Required]
-        public string Name {get; set;}
+        public string Name { get => name; set => name = value; }
     }
 }

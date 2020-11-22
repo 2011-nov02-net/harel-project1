@@ -3,12 +3,15 @@ using Store;
 
 namespace Store.DataModel
 {
-    public partial class Customer : ICustomer
+    public partial class Customer
     {
+        private string name;
+        private int id;
+
         // [Key]
         // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id {get; set; }
+        public int Id { get => id; set => id = value; }
         [Required]
-        public string Name {get; set;}
+        public string Name { get => name; set => name = value; }
     }
 }
