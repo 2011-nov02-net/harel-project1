@@ -111,19 +111,6 @@ namespace Store.DataModel
             return (IEnumerable<IOrder>) Orders.Where(x => x.CustomerId == customer.Id).ToList();
         }
     }
-    /*
-    public class SessionA : ISession
-    {
-        public ISession session;
-        public SessionA() 
-        {
-            Console.WriteLine("hello");
-        }
-        public IQueryable<IOrder> Orders { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IQueryable<ICustomer> Customers { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IQueryable<ILocation> Locations { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public IQueryable<IItem> Items { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    }*/
     public partial class Item : IItem {}
     public partial class Customer : ICustomer { }
     public partial class Order : IOrder
