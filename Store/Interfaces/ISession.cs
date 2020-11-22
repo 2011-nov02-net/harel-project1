@@ -5,10 +5,10 @@ namespace Store
 {
     public interface ISession
     {
-        IQueryable<IOrder> Orders {get; set;}
-        IQueryable<ICustomer> Customers {get; set;}
-        IQueryable<ILocation> Locations {get; set;}
-        IQueryable<IItem> Items {get; set;}
+        IQueryable<IOrder> Orders {get;}
+        IQueryable<ICustomer> Customers {get;}
+        IQueryable<ILocation> Locations {get;}
+        IQueryable<IItem> Items {get;}
         void AddItem(string name);
         void AddCustomer(string name);
         void AddLocation(string name, Dictionary<int, int> itemCounts);

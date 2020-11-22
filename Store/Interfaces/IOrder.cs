@@ -9,6 +9,6 @@ namespace Store
         DateTime Placed {get; set;}
         int CustomerId {get;}
         int LocationId {get;}
-        Dictionary<int, int> ItemCounts { get; set;}
+        Dictionary<int, int> ItemCounts { get;}
     }
 }

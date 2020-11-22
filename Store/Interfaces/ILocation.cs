@@ -7,6 +7,6 @@ namespace Store
     {
         int Id {get; set;}
         string Name {get; set;}
-        Dictionary<int, int> ItemCounts {get; set;}
+        Dictionary<int, int> ItemCounts {get;}
     }
 }
