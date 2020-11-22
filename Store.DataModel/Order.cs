@@ -22,6 +22,7 @@ namespace Store.DataModel
     public partial class OrderItem
     {
         private int itemCount;
+        public const int countMax = 20;
 
         [Key]
         [Column(Order = 1)]
@@ -29,7 +30,7 @@ namespace Store.DataModel
         [Key]
         [Column(Order = 2)]
         public virtual Item Item { get; set; }
-        [Range(1, 20)]
+        [Range(1, countMax)]
         public int ItemCount { get => itemCount; set => itemCount = value; }
     }
 }

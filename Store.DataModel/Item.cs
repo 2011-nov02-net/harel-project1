@@ -12,6 +12,7 @@ namespace Store.DataModel
         // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get => id; set => id = value; }
         [Required]
+        [MaxLength(80)]
         public string Name { get => name; set => name = value; }
     }
 }

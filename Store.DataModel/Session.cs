@@ -52,7 +52,11 @@ namespace Store.DataModel
     {
         int IOrder.Id => this.Id;
 
-        DateTime IOrder.Placed { get => this.Placed; set => this.Placed = value; }
+        DateTime IOrder.Placed 
+        { 
+            get => this.Placed; 
+            set => this.Placed = value; 
+        }
 
         int IOrder.CustomerId => this.Customer.Id;
 
@@ -71,7 +75,12 @@ namespace Store.DataModel
                 this.OrderItems.Clear();
                 foreach (var kv in value)
                 {
-                    this.OrderItems.Add(new OrderItem {ItemCount = kv.Value, Item = new Item { Id = kv.Key }});
+                    this.OrderItems.Add(
+                        new OrderItem {
+                            ItemCount = kv.Value, 
+                            Item = new Item { Id = kv.Key }
+                            }
+                        );
                 }
             }
         }
