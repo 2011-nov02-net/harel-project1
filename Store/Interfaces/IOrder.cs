@@ -5,10 +5,10 @@ namespace Store
 {
     public interface IOrder
     {
-        int Id {get; set;}
+        int Id {get;}
         DateTime Placed {get; set;}
-        int CustomerId {get; set;}
-        int LocationId {get; set;}
+        int CustomerId {get;}
+        int LocationId {get;}
         Dictionary<int, int> ItemCounts { get; set;}
     }
 }
