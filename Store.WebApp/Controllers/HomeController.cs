@@ -7,11 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Store.WebApp.Models;
 
+using Store;
+
 namespace Store.WebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        private Session _session;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -20,7 +24,7 @@ namespace Store.WebApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(new IndexViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier } (_session));
         }
 
         public IActionResult Privacy()
