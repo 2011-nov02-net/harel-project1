@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Store.DataModel;
 
 namespace Store.WebApp
 {
@@ -25,6 +27,14 @@ namespace Store.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddDbContext<Project1Context>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+            services.AddScoped<ISession, Session>(services => {
+                var optionsBuilder = new DbContextOptionsBuilder<Project1Context>();
+                optionsBuilder.UseSqlServer<Project1Context>();
+                //optionsBuilder.UseLoggerFactory();
+                return new Session(optionsBuilder.Options);
+            });
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddControllersWithViews();
         }
