@@ -1,3 +1,10 @@
 @model IEnumerable<Store.IOrder>
 
+@{
+    ViewData["Title"] = "Project 1 - Store App";
+}
 
+<div class="text-center">
+    <h1 class="display-4">Orders for Location @((Store.ILocation) ViewData["Location"]).Name</h1>
+    <!-- Replace with HTML for asp command -->
+</div>
