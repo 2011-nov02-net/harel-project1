@@ -28,7 +28,8 @@
                 @Html.DisplayFor(modelItem => location.Name)
             </td>
             <td>
-                @Html.ActionLink("Place Order", "AddOrder", new { id = location.Id })
+                @Html.ActionLink("Place Order", "AddOrder", new { id = location.Id }) |
+                @Html.ActionLink("Order History", "LocationOrders", new { id = location.Id })
             </td>
         </tr>
 }

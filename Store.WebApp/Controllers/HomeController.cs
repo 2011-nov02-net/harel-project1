@@ -55,7 +55,32 @@ namespace Store.WebApp.Controllers
         public IActionResult SearchCustomer(string id)
         {
             // id is search string
-            return View();
+            var customers = _session.Customers.Where(customer => customer.Name.Contains(id)).AsEnumerable();
+            return View(customers);
+        }
+        public IActionResult LocationOrders(int id)
+        {
+            try
+            {
+                var myLocation = _session.Locations.First(x => x.Id == id);
+                return View(_session.OrderHistory(myLocation));
+            }
+            catch (InvalidOperationException)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        public IActionResult CustomerOrders(int id)
+        {
+            try
+            {
+                var myCustomer = _session.Customers.First(x => x.Id == id);
+                return View(_session.OrderHistory(myCustomer));
+            }
+            catch (InvalidOperationException)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
         public IActionResult DisplayOrders()
         {

@@ -1,0 +1,32 @@
+@model IEnumerable<Store.ICustomer>
+
+@{
+    ViewData["Title"] = "Search Customers";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Search Customers</h1>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var customer in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => customer.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Order History", "CustomerOrders", new { id = customer.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
