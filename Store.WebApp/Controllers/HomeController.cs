@@ -27,15 +27,15 @@ namespace Store.WebApp.Controllers
         }
         public IActionResult AddCustomer()
         {
-            return View(new SessionViewModel { Session = _session, RequestId = Activity.Current?.Id });
+            return View();
         }
         public IActionResult AddOrder()
         {
-            return View(new SessionViewModel { Session = _session, RequestId = Activity.Current?.Id });
+            return View();
         }
         public IActionResult SearchOrders()
         {
-            return View(new SessionViewModel { Session = _session, RequestId = Activity.Current?.Id });
+            return View();
         }
         public IActionResult Privacy()
         {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Store;
 
 namespace Store.DataModel
 {
@@ -56,7 +57,6 @@ namespace Store.DataModel
             context.Customers.Add(new Customer{ Name = name });
             context.SaveChanges();
         }
-
         public void AddItem(string name)
         {
             using var context = new Project1Context(_options);
