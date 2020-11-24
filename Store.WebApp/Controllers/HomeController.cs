@@ -65,7 +65,10 @@ namespace Store.WebApp.Controllers
                 var myLocation = _session.Locations.First(x => x.Id == id);
                 var myOrders   = _session.OrderHistory(myLocation);
                 ViewData["Location"] = myLocation;
-                ViewData["Items"] = _session.Items.Where(x => myOrders.Any(y => y.ItemCounts.ContainsKey(x.Id))).AsEnumerable();
+                ViewData["Items"] = _session.Items.Where(x => 
+                    myOrders.Any(y => 
+                        y.ItemCounts.ContainsKey(x.Id) )
+                    ).AsEnumerable();
                 return View(myOrders);
             }
             catch (InvalidOperationException)
@@ -78,7 +81,13 @@ namespace Store.WebApp.Controllers
             try
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
-                return View(_session.OrderHistory(myCustomer));
+                var myOrders   = _session.OrderHistory(myCustomer);
+                ViewData["Customer"] = myCustomer;
+                ViewData["Items"] = _session.Items.Where(x =>
+                    myOrders.Any(y =>
+                        y.ItemCounts.ContainsKey(x.Id) )
+                    ).AsEnumerable();
+                return View(myOrders);
             }
             catch (InvalidOperationException)
             {
