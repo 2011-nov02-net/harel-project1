@@ -19,7 +19,7 @@ namespace Store.DataModel
                 return context.Orders
                 .Include(x => x.Customer)
                 .Include(x => x.Location)
-                .Include(x => x.OrderItems)
+                .Include(x => x.OrderItems).ThenInclude(x => x.Item)
                 .AsQueryable();
             }
         }
@@ -29,8 +29,8 @@ namespace Store.DataModel
             {
                 using var context = new Project1Context(_options);
                 return context.Locations
-                .Include(x => x.LocationItems)
-                .AsQueryable();
+                .Include(x => x.LocationItems).ThenInclude(x => x.Item)
+                .ToList().AsQueryable();
             }
         }
         public IQueryable<ICustomer> Customers 
