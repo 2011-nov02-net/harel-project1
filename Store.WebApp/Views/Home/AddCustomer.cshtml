@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-@{
-    ViewData["Title"] = "Customer";
-}
-
-<article>
-    <h1>Add</h1>
-@*
-    <h4>Customer</h4>
-    <hr />
-    <div class="row">
-    <div class="col-md-4">
-        <form asp-action="AddCustomer">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="AddCustomer" class="control-label"></label>
-                <input asp-for="AddCustomer" class="form-control" />
-                <span asp-validation-for="AddCustomer" class="text-danger"></span>
-            </div>
-        </form>
-*@
-</article>
-=======
 @model Store.WebApp.Models.CustomerModel
 
 @{
@@ -56,4 +32,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
->>>>>>> f732c42e2639b80aabd9080baf77f4fe22b6790b

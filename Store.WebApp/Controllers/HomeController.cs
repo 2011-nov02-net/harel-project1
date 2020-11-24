@@ -31,8 +31,6 @@ namespace Store.WebApp.Controllers
         public IActionResult AddCustomer()
         {
             return View();
-<<<<<<< HEAD
-=======
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -74,13 +72,10 @@ namespace Store.WebApp.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
->>>>>>> f732c42e2639b80aabd9080baf77f4fe22b6790b
         }
         public IActionResult CustomerOrders(int id)
         {
-<<<<<<< HEAD
             return View();
-=======
             try
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
@@ -90,16 +85,11 @@ namespace Store.WebApp.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
->>>>>>> f732c42e2639b80aabd9080baf77f4fe22b6790b
         }
         public IActionResult DisplayOrders()
         {
-<<<<<<< HEAD
-            return View();
-=======
             return View(); // FIXME figure out how to take a general pair (int? LocationId, int? CustomerId)
             // and filter orders by one or both.
->>>>>>> f732c42e2639b80aabd9080baf77f4fe22b6790b
         }
         public IActionResult Privacy()
         {
