@@ -75,7 +75,6 @@ namespace Store.WebApp.Controllers
         }
         public IActionResult CustomerOrders(int id)
         {
-            return View();
             try
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
