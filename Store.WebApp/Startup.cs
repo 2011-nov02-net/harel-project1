@@ -8,21 +8,43 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using Store.DataModel;
+
+using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace Store.WebApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        const string connectionStringPath = "../connectionString.txt";
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
+            Environment = env;
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
-
+        public IWebHostEnvironment Environment { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
+        static string GetConnectionString(string path)
+        {
+            string connectionString;
+            connectionString = File.ReadAllText(path);
+            return connectionString;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(); // FIXME: lookpu AddLogging
+            services.AddSingleton<ISession, Session>(services => {
+                var optionsBuilder = new DbContextOptionsBuilder<Project1Context>();
+                optionsBuilder.UseSqlServer<Project1Context>(GetConnectionString(connectionStringPath));
+                using var logStream = new StreamWriter("ef-logs.txt");
+                optionsBuilder.LogTo(logStream.WriteLine, LogLevel.Information);
+                return new Session(optionsBuilder.Options);
+            });
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddControllersWithViews();
         }

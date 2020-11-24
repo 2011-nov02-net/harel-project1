@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Store.ILocation>
+
+@{
     ViewData["Title"] = "Project 1 - Store App";
 }
 
@@ -6,3 +8,30 @@
     <h1 class="display-4">Welcome</h1>
 </div>
 
+<p>
+    <a asp-action="AddCustomer">Create New Customer</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var location in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => location.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Place Order", "AddOrder", new { id = location.Id }) |
+                @Html.ActionLink("Order History", "LocationOrders", new { id = location.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

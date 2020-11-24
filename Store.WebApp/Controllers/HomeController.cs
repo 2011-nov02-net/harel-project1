@@ -23,19 +23,83 @@ namespace Store.WebApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            // present link at top to add customer
+            // search bar to search for customers at top (as a form) + submit button
+            // List out locations in main content with links for placing an order and viewing order history
+            return View(_session.Locations.AsEnumerable());
         }
         public IActionResult AddCustomer()
         {
             return View();
+<<<<<<< HEAD
+=======
         }
-        public IActionResult AddOrder()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddCustomer([Bind("Name")] CustomerModel customer)
         {
-            return View();
+            try
+            {
+                _session.AddCustomer(customer.Name);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
-        public IActionResult SearchOrders()
+        public IActionResult AddOrder(int id)
         {
+            // id is the location id 
+            return View(); // page form should contain customer selection dropdown
+            // contain next to each customer a link to display the customer order history
+        }
+        public IActionResult SearchCustomer(string id)
+        {
+            // id is search string
+            var customers = _session.Customers.Where(customer => customer.Name.Contains(id)).AsEnumerable();
+            return View(customers);
+        }
+        public IActionResult LocationOrders(int id)
+        {
+            try
+            {
+                var myLocation = _session.Locations.First(x => x.Id == id);
+                var myOrders   = _session.OrderHistory(myLocation);
+                ViewData["Location"] = myLocation;
+                ViewData["Items"] = _session.Items.Where(x => myOrders.Any(y => y.ItemCounts.ContainsKey(x.Id))).AsEnumerable();
+                return View(myOrders);
+            }
+            catch (InvalidOperationException)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+>>>>>>> f732c42e2639b80aabd9080baf77f4fe22b6790b
+        }
+        public IActionResult CustomerOrders(int id)
+        {
+<<<<<<< HEAD
             return View();
+=======
+            try
+            {
+                var myCustomer = _session.Customers.First(x => x.Id == id);
+                return View(_session.OrderHistory(myCustomer));
+            }
+            catch (InvalidOperationException)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+>>>>>>> f732c42e2639b80aabd9080baf77f4fe22b6790b
+        }
+        public IActionResult DisplayOrders()
+        {
+<<<<<<< HEAD
+            return View();
+=======
+            return View(); // FIXME figure out how to take a general pair (int? LocationId, int? CustomerId)
+            // and filter orders by one or both.
+>>>>>>> f732c42e2639b80aabd9080baf77f4fe22b6790b
         }
         public IActionResult Privacy()
         {
