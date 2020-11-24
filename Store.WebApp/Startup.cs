@@ -37,7 +37,7 @@ namespace Store.WebApp
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging(); // FIXME: lookpu AddLogging
+            //services.AddLogging(lb => lb.AddEventLog()); // FIXME: lookpu AddLogging
             services.AddSingleton<ISession, Session>(services => {
                 var optionsBuilder = new DbContextOptionsBuilder<Project1Context>();
                 optionsBuilder.UseSqlServer<Project1Context>(GetConnectionString(connectionStringPath));
