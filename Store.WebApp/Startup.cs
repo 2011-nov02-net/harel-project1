@@ -38,13 +38,9 @@ namespace Store.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddLogging(lb => lb.AddEventLog()); // FIXME: lookpu AddLogging
-            services.AddSingleton<ISession, Session>(services => {
-                var optionsBuilder = new DbContextOptionsBuilder<Project1Context>();
-                optionsBuilder.UseSqlServer<Project1Context>(GetConnectionString(connectionStringPath));
-                using var logStream = new StreamWriter("ef-logs.txt");
-                optionsBuilder.LogTo(logStream.WriteLine, LogLevel.Information);
-                return new Session(optionsBuilder.Options);
-            });
+            services.AddDbContext<Project1Context>(optionsBuilder => 
+                optionsBuilder.UseSqlServer(GetConnectionString(connectionStringPath)));
+            services.AddScoped<ISession, Session>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddControllersWithViews();
         }

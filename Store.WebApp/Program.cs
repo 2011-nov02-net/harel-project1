@@ -18,10 +18,10 @@ namespace Store.WebApp
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.AddConsole();
+                .ConfigureLogging(logging => {
+                    // logging.AddDebug();
+                    // logging.AddEventLog();
+                    logging.AddSimpleConsole();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
