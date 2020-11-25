@@ -7,6 +7,7 @@ namespace Store.WebApp.Models
         
         private int _id;
         private string _name;
+        [Display(Name = "Customer Id")]
         public int Id { get => _id; set => _id = value; }
         [Display(Name = "Customer Name")]
         [MaxLength(80)]

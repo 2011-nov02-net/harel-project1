@@ -7,8 +7,11 @@ namespace Store
     {
         int Id {get;}
         DateTime Placed {get; set;}
-        int CustomerId {get;}
-        int LocationId {get;}
+        int CustomerId => Customer.Id;
+        ICustomer Customer {get;}
+        int LocationId => Location.Id;
+        ILocation Location {get;}
         Dictionary<int, int> ItemCounts { get;}
+        IEnumerable<IItem> Items {get;}
     }
 }

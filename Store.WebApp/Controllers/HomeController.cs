@@ -64,11 +64,13 @@ namespace Store.WebApp.Controllers
             {
                 var myLocation = _session.Locations.First(x => x.Id == id);
                 var myOrders   = _session.OrderHistory(myLocation);
+                /*
                 ViewData["Location"] = myLocation;
                 ViewData["Items"] = _session.Items.Where(x => 
                     myOrders.Any(y => 
                         y.ItemCounts.ContainsKey(x.Id) )
-                    ).AsEnumerable();
+                    ).AsEnumerable();*/
+                ViewBag.location = myLocation;
                 return View(myOrders);
             }
             catch (InvalidOperationException)
