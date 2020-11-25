@@ -2,9 +2,66 @@
 
 @{
     ViewData["Title"] = "Project 1 - Store App";
+    var myItems = Model.Select(o => o.Items)
+        .Aggregate((x, y) => x.Concat(y))
+        .Distinct().OrderBy(item => item.Id);
 }
 
 <div class="text-center">
-    <h1 class="display-4">Orders for Location @((Store.ILocation) ViewData["Location"]).Name</h1>
-    <!-- Replace with HTML for asp command -->
+    <h1 class="display-4">
+        Orders placed at @Html.DisplayFor(modelItem => ((Store.ILocation) ViewData["Location"]).Name)
+    </h1>
 </div>
+
+@if (Model.Any())
+{
+    var anOrder = OrderModel { Model.First() };
+    var anCustomer = CustomerModel { Model.First().Customer };
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName(OrderModel.Id)
+            </th>
+            <th>
+                @Html.DisplayName(OrderModel.Placed)
+            </th>
+            <th>
+                @Html.DisplayName(CustomerModel.Name)
+            </th>
+            @*<th>
+                @Html.DisplayName(CustomerModel.Id)
+            </th>*@
+            @foreach (var item in myItems)
+            {
+                <th>@Html.Display(item.Name)</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var order in Model) {
+    var orderM = OrderModel { order };
+    var customerM = CustomerModel { order.Customer };
+        <tr>
+            <td>
+                @Html.Display(orderM.Id)
+            </td>
+            <td>
+                @Html.Display(orderM.Placed)
+            </td>
+            <td>
+                @Html.Display(customerM.Name)
+            </td>
+            @*<th>
+                @Html.DisplayName(customerM.Id)
+            </th>*@
+            @foreach (var item in myItems)
+            {
+                <td>@Html.Display(order.ItemCounts.ElementAtOrDefault(item.Id))</td>
+            }
+        </tr>
+}
+    </tbody>
+</table>
+}
+
