@@ -84,11 +84,12 @@ namespace Store.WebApp.Controllers
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
                 var myOrders   = _session.OrderHistory(myCustomer);
-                ViewData["Customer"] = myCustomer;
+                /*ViewData["Customer"] = myCustomer;
                 ViewData["Items"] = _session.Items.Where(x =>
                     myOrders.Any(y =>
                         y.ItemCounts.ContainsKey(x.Id) )
-                    ).AsEnumerable();
+                    ).AsEnumerable();*/
+                ViewBag.customer = myCustomer;
                 return View(myOrders);
             }
             catch (InvalidOperationException)

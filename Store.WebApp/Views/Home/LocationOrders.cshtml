@@ -9,25 +9,25 @@
 
 <div class="text-center">
     <h1 class="display-4">
-        Orders placed at @Html.DisplayFor(modelItem => ((Store.ILocation) ViewData["Location"]).Name)
+        Orders placed at @Html.DisplayFor(modelItem => ViewBag.location.Name)
     </h1>
 </div>
 
 @if (Model.Any())
 {
-    var anOrder = OrderModel { Model.First() };
-    var anCustomer = CustomerModel { Model.First().Customer };
+    var anOrder = Model.First();
+    var aCustomer = Model.First().Customer;
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayName(OrderModel.Id)
+                @Html.DisplayNameFor(model => anOrder.Id)
             </th>
             <th>
-                @Html.DisplayName(OrderModel.Placed)
+                @Html.DisplayNameFor(model => anOrder.Placed)
             </th>
             <th>
-                @Html.DisplayName(CustomerModel.Name)
+                @Html.DisplayNameFor(model => aCustomer.Name)
             </th>
             @*<th>
                 @Html.DisplayName(CustomerModel.Id)
@@ -40,24 +40,22 @@
     </thead>
     <tbody>
 @foreach (var order in Model) {
-    var orderM = OrderModel { order };
-    var customerM = CustomerModel { order.Customer };
         <tr>
             <td>
-                @Html.Display(orderM.Id)
+                @Html.DisplayFor(model => order.Id)
             </td>
             <td>
-                @Html.Display(orderM.Placed)
+                @Html.DisplayFor(model => order.Placed)
             </td>
             <td>
-                @Html.Display(customerM.Name)
+                @Html.DisplayFor(model => order.Customer.Name)
             </td>
             @*<th>
                 @Html.DisplayName(customerM.Id)
             </th>*@
             @foreach (var item in myItems)
             {
-                <td>@Html.Display(order.ItemCounts.ElementAtOrDefault(item.Id))</td>
+                <td>@Html.DisplayFor(model => order.ItemCounts.ElementAtOrDefault(item.Id))</td>
             }
         </tr>
 }
