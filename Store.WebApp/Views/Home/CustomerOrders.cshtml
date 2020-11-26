@@ -1,2 +1,64 @@
 @model IEnumerable<Store.IOrder>
 
+@{
+    ViewData["Title"] = "Project 1 - Store App";
+    var myItems = Model.Select(o => o.Items)
+        .Aggregate((x, y) => x.Concat(y))
+        .Distinct().OrderBy(item => item.Id);
+}
+
+<div class="text-center">
+    <h1 class="display-4">
+        Orders placed by @Html.DisplayFor(modelItem => ViewBag.customer.Name)
+    </h1>
+</div>
+
+@if (Model.Any())
+{
+    var anOrder = Model.First();
+    var aLocation = Model.First().Location;
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => anOrder.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => anOrder.Placed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => aLocation.Name)
+            </th>
+            @*<th>
+                @Html.DisplayName(CustomerModel.Id)
+            </th>*@
+            @foreach (var item in myItems)
+            {
+                <th>@Html.Display(item.Name)</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var order in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => order.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(model => order.Placed)
+            </td>
+            <td>
+                @Html.DisplayFor(model => order.Location.Name)
+            </td>
+            @*<th>
+                @Html.DisplayName(customerM.Id)
+            </th>*@
+            @foreach (var item in myItems)
+            {
+                <td>@Html.DisplayFor(model => order.ItemCounts.ElementAtOrDefault(item.Id))</td>
+            }
+        </tr>
+}
+    </tbody>
+</table>
+}
