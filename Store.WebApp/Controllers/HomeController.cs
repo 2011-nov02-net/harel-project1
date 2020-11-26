@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Store.WebApp.Models;
 using Store.DataModel;
+
 
 namespace Store.WebApp.Controllers
 {
@@ -46,11 +48,43 @@ namespace Store.WebApp.Controllers
                 return View();
             }
         }
-        public IActionResult AddOrder(int id)
-        {
-            // id is the location id 
-            return View(); // page form should contain customer selection dropdown
+        public IActionResult AddOrder(int id) // id is the location id 
+        {   
+            return View(_session.Locations.First(x => x.Id == id)); 
+            // page form should contain customer selection dropdown
             // contain next to each customer a link to display the customer order history
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddOrder(IFormCollection collection)
+        {
+            try
+            {
+                // OrderModel { };
+                // IOrder ord = null;
+                // ord.CustomerId
+                // ord.LocationId
+                // ord.ItemCounts
+                var orderLocation = _session.Locations.Where(location => 
+                    location.Id == Convert.ToInt32(collection["LocationId"])).First();
+                var orderCustomer = _session.Customers.Where(customer =>
+                    customer.Id == Convert.ToInt32(collection["CustomerId"])).First();
+                Dictionary<int,int> itemCounts = new();
+                foreach (var skey in collection.Keys)
+                {
+                    if (skey.StartsWith("item_")) {
+                        var myItemId = Convert.ToInt32(skey.Remove(0, 5));
+                        var myItemCount = Convert.ToInt32(collection[skey]);
+                        itemCounts.Add(myItemId, myItemCount);
+                    }
+                }
+                _session.AddOrder(orderCustomer, orderLocation, itemCounts);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
         public IActionResult SearchCustomer(string id)
         {
