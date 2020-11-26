@@ -7,6 +7,13 @@ namespace Store.WebApp.Models
         
         private int _id;
         private string _name;
+
+        public CustomerModel(ICustomer customer)
+        {
+            _id = customer.Id;
+            _name = customer.Name;
+        }
+
         [Display(Name = "Customer Id")]
         public int Id { get => _id; set => _id = value; }
         [Display(Name = "Customer Name")]

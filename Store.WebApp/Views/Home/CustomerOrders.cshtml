@@ -9,7 +9,7 @@
 
 <div class="text-center">
     <h1 class="display-4">
-        Orders placed by @Html.DisplayFor(modelItem => ViewBag.customer.Name)
+        Orders placed by @Html.DisplayFor(modelItem => ((CustomerModel) ViewData["Customer"]).Name)
     </h1>
 </div>
 

@@ -9,7 +9,7 @@
 
 <div class="text-center">
     <h1 class="display-4">
-        Orders placed at @Html.DisplayFor(modelItem => ViewBag.location.Name)
+        Orders placed at @Html.DisplayFor(modelItem => ((LocationModel) ViewData["Location"]).Name)
     </h1>
 </div>
 
