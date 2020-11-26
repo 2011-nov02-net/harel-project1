@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Store.WebApp.Models
 {
     public class ItemModel : IItem
@@ -12,8 +14,8 @@ namespace Store.WebApp.Models
             Id = item.Id;
             Name = item.Name;
         }
-        int id;
-        string name;
+        private int id;
+        private string name;
 
         public int Id 
         { 

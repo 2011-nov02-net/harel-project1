@@ -7,7 +7,7 @@ namespace Store.WebApp.Models
         
         private int _id;
         private string _name;
-
+        public CustomerModel() { }
         public CustomerModel(ICustomer customer)
         {
             _id = customer.Id;

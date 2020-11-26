@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,8 +6,8 @@ namespace Store.WebApp.Models
 {
     class LocationModel : ILocation
     {
-        int id;
-        string name;
+        private int id;
+        private string name;
         readonly List<ItemModel> items;
         readonly List<int> itemCounts;
 

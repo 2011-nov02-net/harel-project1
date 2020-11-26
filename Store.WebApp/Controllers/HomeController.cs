@@ -64,11 +64,6 @@ namespace Store.WebApp.Controllers
         {
             try
             {
-                // OrderModel { };
-                // IOrder ord = null;
-                // ord.CustomerId
-                // ord.LocationId
-                // ord.ItemCounts
                 var orderLocation = _session.Locations.Where(location => 
                     location.Id == Convert.ToInt32(collection["LocationId"])).First();
                 var orderCustomer = _session.Customers.Where(customer =>
