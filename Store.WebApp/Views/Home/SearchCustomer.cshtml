@@ -8,6 +8,8 @@
     <h1 class="display-4">Search Customers</h1>
 </div>
 
+@if (Model.Any())
+{
 <table class="table">
     <thead>
         <tr>
@@ -30,3 +32,9 @@
 }
     </tbody>
 </table>
+} else 
+{
+<div class="text-center">
+    <h2 class="display-4">No Customers Found.</h2>
+</div>
+}

@@ -19,32 +19,30 @@
                 <label asp-for="CustomerId" class="control-label"></label>
                 <select asp-for="CustomerId" asp-items="Model.CustomersSelect"></select>
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
                 @for (var i = 0; i < Model.Location.items.Count; i++)
                 {
                     var item = Model.Location.items[i];
                     var maxCount = System.Math.Min(Model.Location.itemCounts[i], Model.CountMax);
-                    <label for="item_@item.Id">@item.Name</label>
-                    <input type="number" id="item_@item.Id" name="item_@item.Id" 
-                        value="0" min="0" max="@maxCount">   
+                    <div class="form-group">
+                        <label for="item_@item.Id">@item.Name</label>
+                        <input type="number" id="item_@item.Id" name="item_@item.Id" 
+                            value="0" min="0" max="@maxCount">   
+                    </div>
                 }
-            @* <!-- add support for checking against overall order limit
-                    @Html.DropDownListFor(model => model.CustomerId,
-                new SelectList(Model.Costomers),
-            "Select Customer")-->
-                 @Model.customers
-                @Html.DropDownList(ViewBag.customers.Where(x => SelectListItem(x) ))
-        <input asp-for="ItemCounts" class="form-control"/>
-                @foreach (var kv in Model.Location.ItemCounts)
-                {
-        <label asp-for="ItemCounts[kv.Key]"></label>
-                    
-                    <label asp-for="item_@Html.Display(kv.Key)" class="control-label"></label>
-                    <input asp-for="item_@Html.Display(kv.Key)" class="form-control" />
-                    <span asp-validation-for="item_@Html.Display(kv.Key)" class="text-danger"></span>
-                    
-                }*@
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+@*
+@foreach (var kv in Model.Location.ItemCounts)
+{
+    <label asp-for="item_@Html.Display(kv.Key)" class="control-label"></label>
+    <input asp-for="item_@Html.Display(kv.Key)" class="form-control" />
+    <span asp-validation-for="item_@Html.Display(kv.Key)" class="text-danger"></span>   
+}
+// page form should contain customer selection dropdown
+// contain next to each customer a link to display the customer order history
+*@

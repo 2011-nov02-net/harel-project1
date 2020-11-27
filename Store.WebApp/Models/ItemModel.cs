@@ -16,13 +16,13 @@ namespace Store.WebApp.Models
         }
         private int id;
         private string name;
+        [Display(Name = "Item Id")]
         public int Id 
         { 
             get => id; 
             set => id = value; 
         }
         [Display(Name = "Item Name")]
-        [DisplayFormat()]
         public string Name 
         { 
             get => name; 

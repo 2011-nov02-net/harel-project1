@@ -25,9 +25,6 @@ namespace Store.WebApp.Controllers
 
         public IActionResult Index()
         {
-            // present link at top to add customer
-            // search bar to search for customers at top (as a form) + submit button
-            // List out locations in main content with links for placing an order and viewing order history
             return View(_session.Locations.AsEnumerable());
         }
         public IActionResult AddCustomer()
@@ -48,7 +45,10 @@ namespace Store.WebApp.Controllers
                 return View();
             }
         }
-        public IActionResult AddOrder(int id) // id is the location id 
+        /// <param>
+        /// id is the location id
+        /// </param>
+        public IActionResult AddOrder(int id) 
         {
             var model = new AddOrderViewModel(
                 _session.Locations.First(x => x.Id == id), 
@@ -56,8 +56,6 @@ namespace Store.WebApp.Controllers
                 _session.Items.ToList().AsQueryable(), 
                 OrderItem.countMax);
             return View(model); 
-            // page form should contain customer selection dropdown
-            // contain next to each customer a link to display the customer order history
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

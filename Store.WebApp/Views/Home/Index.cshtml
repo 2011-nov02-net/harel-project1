@@ -8,6 +8,16 @@
     <h1 class="display-4">Welcome</h1>
 </div>
 
+<div class="row">
+    <form asp-action="SearchCustomer" method="get">
+        <div class="form-group">
+            <label for="name" class="control-label">Search Customers:</label>
+            <input type="text" id="name" name="id" class="form-control" />
+            <input type="submit" value="SearchCustomer" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
 <p>
     <a asp-action="AddCustomer">Create New Customer</a>
 </p>
@@ -35,3 +45,10 @@
 }
     </tbody>
 </table>
+
+@* 
+present link at top to add customer
+search bar to search for customers at top (as a form) + submit button
+List out locations in main content with links for placing an order 
+    and viewing order history
+*@

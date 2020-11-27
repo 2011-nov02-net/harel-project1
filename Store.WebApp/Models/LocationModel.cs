@@ -26,6 +26,7 @@ namespace Store.WebApp.Models
         }
 
         public int Id { get => id; set => id = value; }
+        [DisplayFormat()]
         public string Name { get => name; set => name = value;}
         public Dictionary<int, int> ItemCounts
         {
