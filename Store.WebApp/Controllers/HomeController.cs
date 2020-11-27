@@ -53,7 +53,8 @@ namespace Store.WebApp.Controllers
             var model = new AddOrderViewModel(
                 _session.Locations.First(x => x.Id == id), 
                 _session.Customers.ToList().AsQueryable(), 
-                _session.Items.ToList().AsQueryable());
+                _session.Items.ToList().AsQueryable(), 
+                OrderItem.countMax);
             return View(model); 
             // page form should contain customer selection dropdown
             // contain next to each customer a link to display the customer order history

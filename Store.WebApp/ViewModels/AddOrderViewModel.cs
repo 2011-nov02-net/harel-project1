@@ -19,13 +19,16 @@ namespace Store.WebApp.Models
         [Required]
         public string CustomerId { get; set; }
         public string LocationId { get; set; }
+        public int CountMax {get; }
         public AddOrderViewModel(ILocation location, 
                                  IQueryable<ICustomer> customers, 
-                                 IQueryable<IItem> items)
+                                 IQueryable<IItem> items,
+                                 int countMax)
         {
             Customers = customers.Select(x => new CustomerModel(x));
             Location = new LocationModel(location, items);
             LocationId = Location.Id.ToString();
+            CountMax = countMax;
         }
     }
 }

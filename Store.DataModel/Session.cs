@@ -1,17 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+// using Microsoft.EntityFrameworkCore;
 using Store;
 
 namespace Store.DataModel
 {
     public class Session : ISession
     {
-        private readonly DbContextOptions<Project1Context> _options;
         private readonly Project1Context _context;
-        public Session(DbContextOptions<Project1Context> options) {
-            _options = options;
-        }
+
         public Session(Project1Context context) {
             _context = context;
         }
@@ -27,21 +24,21 @@ namespace Store.DataModel
                 .AsQueryable();
             }
         }
-        public IQueryable<ILocation> Locations 
-        { 
-            get 
+        public IQueryable<ILocation> Locations
+        {
+            get
             {
                 return _context.Locations
                 .Include(x => x.LocationItems).ThenInclude(x => x.Item)
                 .ToList().AsQueryable();
             }
         }
-        public IQueryable<ICustomer> Customers 
-        { 
+        public IQueryable<ICustomer> Customers
+        {
             get =>  _context.Customers.AsQueryable();
         }
-        public IQueryable<IItem> Items 
-        { 
+        public IQueryable<IItem> Items
+        {
             get => _context.Items.AsQueryable();
         }
 
@@ -63,10 +60,10 @@ namespace Store.DataModel
             foreach (var kv in itemCounts)
             {
                 _context.LocationItems.Add(
-                    new LocationItem 
-                    { 
-                        Location = location, 
-                        Item = _context.Items.Find(kv.Key), 
+                    new LocationItem
+                    {
+                        Location = location,
+                        Item = _context.Items.Find(kv.Key),
                         ItemCount = kv.Value }
                 );
             }
@@ -75,9 +72,9 @@ namespace Store.DataModel
 
         public void AddOrder(ICustomer customer, ILocation location, Dictionary<int, int> itemCounts)
         {
-            var order = new Order 
+            var order = new Order
             {
-                Customer = _context.Customers.Find(customer.Id),  
+                Customer = _context.Customers.Find(customer.Id),
                 Location = _context.Locations.Find(location.Id),
             };
             foreach (var kv in itemCounts)
@@ -110,8 +107,8 @@ namespace Store.DataModel
     {
         Dictionary<int, int> IOrder.ItemCounts
         {
-            get 
-            { 
+            get
+            {
                 var orderItemsDict = new Dictionary<int,int>();
                 foreach (var io in OrderItems) orderItemsDict.Add(io.Item.Id, io.ItemCount);
                 return orderItemsDict;
@@ -123,14 +120,14 @@ namespace Store.DataModel
     }
     public partial class Location : ILocation
         {
-            public Dictionary<int, int> ItemCounts 
-            { 
+            public Dictionary<int, int> ItemCounts
+            {
                 get
-                { 
+                {
                     var locationItemsDict = new Dictionary<int,int>();
                     foreach (var io in LocationItems) locationItemsDict.Add(io.Item.Id, io.ItemCount);
                     return locationItemsDict;
-                } 
+                }
             }
         }
 }
