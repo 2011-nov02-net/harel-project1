@@ -351,3 +351,4 @@ MigrationBackup/
 .vscode/*
 */.vscode/
 project1.code-workspace
+connectionString.txt
