@@ -18,12 +18,14 @@ namespace Store.WebApp.Models
             Customers.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
         [Required]
         public string CustomerId { get; set; }
+        public string LocationId { get; set; }
         public AddOrderViewModel(ILocation location, 
                                  IQueryable<ICustomer> customers, 
                                  IQueryable<IItem> items)
         {
-            Location = new LocationModel(location, items);
             Customers = customers.Select(x => new CustomerModel(x));
+            Location = new LocationModel(location, items);
+            LocationId = Location.Id.ToString();
         }
     }
 }
