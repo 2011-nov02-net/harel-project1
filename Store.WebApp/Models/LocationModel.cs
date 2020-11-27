@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Store.WebApp.Models
 {
-    internal class LocationModel : ILocation
+    public class LocationModel : ILocation
     {
         private int id;
         private string name;

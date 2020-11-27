@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Store.WebApp.Models
 {
-    internal class AddOrderViewModel
+    public class AddOrderViewModel
     {
         [HiddenInput]
         public LocationModel Location {get; set;}
