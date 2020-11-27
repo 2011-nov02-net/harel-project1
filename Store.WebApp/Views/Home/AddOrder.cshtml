@@ -1,4 +1,4 @@
-@model Store.AddOrderViewModel
+@model Store.WebApp.Models.AddOrderViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -11,9 +11,19 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="AddOrder" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="CustomerId" class="control-label"></label>
+                <select asp-for="CustomerId" asp-items="Model.CustomersSelect"></select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+                @for (var i = 0; i < Model.Location.items.Count; i++)
+                {
+                    var item = Model.Location.items[i];
+                    <label for="item_@Html.Display(item.id)">@Html.DisplayFor(item.Name)</label>
+                    <input type="number" id="item_@Html.Display(item.id)" name="item_@Html.Display(item.id)" 
+                        value="0" min="0" max="@Model.Location.itemCounts[i]">   
+                }
             @*
                 <!--@Html.DropDownListFor(model => model.CustomerId,
                 new SelectList(Model.Costomers),
@@ -30,9 +40,7 @@
                     <span asp-validation-for="item_@Html.Display(kv.Key)" class="text-danger"></span>
                     
                 }
-            </div>
             *@
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

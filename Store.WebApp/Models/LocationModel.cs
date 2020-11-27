@@ -8,8 +8,8 @@ namespace Store.WebApp.Models
     {
         private int id;
         private string name;
-        readonly List<ItemModel> items;
-        readonly List<int> itemCounts;
+        public readonly List<ItemModel> items;
+        public readonly List<int> itemCounts;
 
         public LocationModel(ILocation location, IQueryable<IItem> allItems)
         {
