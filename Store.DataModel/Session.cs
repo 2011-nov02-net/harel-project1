@@ -78,6 +78,7 @@ namespace Store.DataModel
                 Customer = _context.Customers.Find(customer.Id),
                 Location = _context.Locations.Find(location.Id),
             };
+            _context.Orders.Add(order);
             foreach (var kv in itemCounts)
             {
                 _context.OrderItems.Add(
@@ -94,12 +95,12 @@ namespace Store.DataModel
 
         public IEnumerable<IOrder> OrderHistory(ILocation location)
         {
-            return _context.Orders.Where(x => x.Location.Id == location.Id).ToList();
+            return _context.Locations.Find(location.Id).Orders.ToList();
         }
 
         public IEnumerable<IOrder> OrderHistory(ICustomer customer)
         {
-            return _context.Orders.Where(x => x.Customer.Id == customer.Id).ToList();
+            return _context.Customers.Find(customer.Id).Orders.ToList();
         }
     }
     public partial class Item : IItem {}
@@ -116,11 +117,8 @@ namespace Store.DataModel
                 return orderItemsDict;
             }
         }
-        [NotMapped]
         IEnumerable<IItem> IOrder.Items => OrderItems.Select(oi => oi.Item);
-        [NotMapped]
-        ICustomer IOrder.Customer => Customer;
-        [NotMapped]
+        ICustomer IOrder.Customer => Customer;  
         ILocation IOrder.Location => Location;
     }
     public partial class Location : ILocation

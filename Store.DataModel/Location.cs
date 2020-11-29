@@ -18,6 +18,7 @@ namespace Store.DataModel
         [MaxLength(80)]
         public string Name { get => name; set => name = value; }
         public virtual ICollection<LocationItem> LocationItems { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
     public partial class LocationItem
     {

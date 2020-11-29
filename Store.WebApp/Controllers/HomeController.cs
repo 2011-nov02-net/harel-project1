@@ -46,13 +46,13 @@ namespace Store.WebApp.Controllers
         /// <param>
         /// id is the location id
         /// </param>
-        public IActionResult AddOrder(int id) 
+        public IActionResult AddOrder(int id)
         {
             var model = new AddOrderViewModel(
-                _session.Locations.First(x => x.Id == id), 
-                _session.Customers.ToList().AsQueryable(), 
+                _session.Locations.First(x => x.Id == id),
+                _session.Customers.ToList().AsQueryable(),
                 _session.Items.ToList().AsQueryable());
-            return View(model); 
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -60,10 +60,12 @@ namespace Store.WebApp.Controllers
         {
             try
             {
-                var orderLocation = _session.Locations.Where(location => 
-                    location.Id == Convert.ToInt32(collection["LocationId"])).First();
+                var LocationId = Convert.ToInt32(collection["LocationId"]);
+                var orderLocation = _session.Locations.Where(location =>
+                    location.Id == LocationId).First();
+                var CustomerId = Convert.ToInt32(collection["CustomerId"]);
                 var orderCustomer = _session.Customers.Where(customer =>
-                    customer.Id == Convert.ToInt32(collection["CustomerId"])).First();
+                    customer.Id == CustomerId).First();
                 Dictionary<int,int> itemCounts = new();
                 foreach (var skey in collection.Keys)
                 {
@@ -73,14 +75,14 @@ namespace Store.WebApp.Controllers
                         itemCounts.Add(myItemId, myItemCount);
                     }
                 }
-                _session.AddOrder(orderCustomer, orderLocation, itemCounts);
+                _session.AddOrder(orderCustomer, orderLocation, itemCounts); // Error on this line
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
             {
                 var model = new AddOrderViewModel(
-                _session.Locations.First(), 
-                _session.Customers.ToList().AsQueryable(), 
+                _session.Locations.First(),
+                _session.Customers.ToList().AsQueryable(),
                 _session.Items.ToList().AsQueryable());
                 Console.WriteLine(e);
                 return View(model);
@@ -98,17 +100,17 @@ namespace Store.WebApp.Controllers
             {
                 var myLocation = _session.Locations.First(x => x.Id == id);
                 var myOrders   = _session.OrderHistory(myLocation);
-                /*
                 ViewData["Location"] = myLocation;
-                ViewData["Items"] = _session.Items.Where(x => 
-                    myOrders.Any(y => 
+                /*ViewData["Items"] = _session.Items.Where(x =>
+                    myOrders.Any(y =>
                         y.ItemCounts.ContainsKey(x.Id) )
-                    ).AsEnumerable();*/
-                ViewBag.location = myLocation;
+                    ).AsEnumerable();
+                ViewBag.location = myLocation;*/
                 return View(myOrders);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
+                Console.WriteLine(e);
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -118,16 +120,17 @@ namespace Store.WebApp.Controllers
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
                 var myOrders   = _session.OrderHistory(myCustomer);
-                /*ViewData["Customer"] = myCustomer;
-                ViewData["Items"] = _session.Items.Where(x =>
+                ViewData["Customer"] = myCustomer;
+                /*ViewData["Items"] = _session.Items.Where(x =>
                     myOrders.Any(y =>
                         y.ItemCounts.ContainsKey(x.Id) )
-                    ).AsEnumerable();*/
-                ViewBag.customer = myCustomer;
+                    ).AsEnumerable();
+                ViewBag.customer = myCustomer;*/
                 return View(myOrders);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
+                Console.WriteLine(e);
                 return RedirectToAction(nameof(Index));
             }
         }
