@@ -1,12 +1,7 @@
 @model Store.WebApp.Models.AddOrderViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
+<h1>Place Order</h1>
 
-<h1>Create</h1>
-
-<h4>Order</h4>
 <hr />
 
 <div class="row">
@@ -17,7 +12,9 @@
                 <input type="hidden" asp-for="LocationId" class="form-control" />
                 
                 <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" asp-items="Model.CustomersSelect"></select>
+                <select asp-for="CustomerId" id="CustomerId" asp-items="Model.CustomersSelect">
+                    <option selected="selected" value="">Select A Customer</option>
+                </select>
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
                 @for (var i = 0; i < Model.Location.items.Count; i++)

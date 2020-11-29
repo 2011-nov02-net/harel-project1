@@ -7,17 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Store.WebApp.Models;
-using Store.DataModel;
-
 
 namespace Store.WebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly Session _session;
+        private readonly ISession _session;
 
-        public HomeController(ILogger<HomeController> logger, Session session)
+        public HomeController(ILogger<HomeController> logger, ISession session)
         {
             _logger = logger;
             _session = session;
@@ -53,8 +51,7 @@ namespace Store.WebApp.Controllers
             var model = new AddOrderViewModel(
                 _session.Locations.First(x => x.Id == id), 
                 _session.Customers.ToList().AsQueryable(), 
-                _session.Items.ToList().AsQueryable(), 
-                OrderItem.countMax);
+                _session.Items.ToList().AsQueryable());
             return View(model); 
         }
         [HttpPost]
@@ -79,9 +76,14 @@ namespace Store.WebApp.Controllers
                 _session.AddOrder(orderCustomer, orderLocation, itemCounts);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                var model = new AddOrderViewModel(
+                _session.Locations.First(), 
+                _session.Customers.ToList().AsQueryable(), 
+                _session.Items.ToList().AsQueryable());
+                Console.WriteLine(e);
+                return View(model);
             }
         }
         public IActionResult SearchCustomer(string id)

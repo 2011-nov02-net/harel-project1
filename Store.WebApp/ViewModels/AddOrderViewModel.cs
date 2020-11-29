@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using Store.DataModel;
 
 namespace Store.WebApp.Models
 {
@@ -16,18 +17,19 @@ namespace Store.WebApp.Models
             x.Id == Convert.ToInt32(CustomerId)).FirstOrDefault();
         public List<SelectListItem> CustomersSelect => 
             Customers.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+        public SelectList CustomersSelectList => new SelectList(CustomersSelect);
         [Required]
-        public string CustomerId { get; set; }
-        public string LocationId { get; set; }
+        public int? CustomerId { get; set; }
+        public int? LocationId { get; set; }
         public int CountMax {get; }
         public AddOrderViewModel(ILocation location, 
                                  IQueryable<ICustomer> customers, 
                                  IQueryable<IItem> items,
-                                 int countMax)
+                                 int countMax = OrderItem.countMax)
         {
             Customers = customers.Select(x => new CustomerModel(x));
             Location = new LocationModel(location, items);
-            LocationId = Location.Id.ToString();
+            LocationId = Location.Id;
             CountMax = countMax;
         }
     }
