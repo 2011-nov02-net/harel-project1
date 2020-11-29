@@ -22,14 +22,13 @@ namespace Store.DataModel
     public partial class LocationItem
     {
         private int itemCount;
-
-        [Key]
-        [Column(Order = 1)]
+        public int LocationId {get;set;}
+        [Key, Column(Order = 1), ForeignKey("LocationId")]
         public virtual Location Location { get; set; }
-        [Key]
-        [Column(Order = 2)]
+        public int ItemId;
+        [Key, Column(Order = 2), ForeignKey("ItemId")]
         public virtual Item Item { get; set; }
-        [Range(1, int.MaxValue)]
+        [Required, Range(1, int.MaxValue)]
         public int ItemCount { get => itemCount; set => itemCount = value; }
     }
 }

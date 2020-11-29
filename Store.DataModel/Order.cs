@@ -15,7 +15,11 @@ namespace Store.DataModel
         public int Id { get => id; set => id = value; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime Placed { get => placed; set => placed = value; }
+        public int CustomerId { get; set; }
+        [ForeignKey("CustomerId")]
         public virtual Customer Customer { get; set; }
+        public int LocationId { get; set; }
+        [ForeignKey("LocationId")]
         public virtual Location Location { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
@@ -23,12 +27,11 @@ namespace Store.DataModel
     {
         private int itemCount;
         public const int countMax = 20;
-
-        [Key]
-        [Column(Order = 1)]
+        public int OrderId {get; set;}
+        [Key, Column(Order = 1), ForeignKey("OrderId")]
         public virtual Order Order { get; set; }
-        [Key]
-        [Column(Order = 2)]
+        public int ItemId {get;set;}
+        [Key, Column(Order = 2), ForeignKey("ItemId")]
         public virtual Item Item { get; set; }
         [Range(1, countMax)]
         public int ItemCount { get => itemCount; set => itemCount = value; }

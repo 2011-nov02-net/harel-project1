@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Store;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Store.DataModel
 {
@@ -105,6 +106,7 @@ namespace Store.DataModel
     public partial class Customer : ICustomer { }
     public partial class Order : IOrder
     {
+        [NotMapped]
         Dictionary<int, int> IOrder.ItemCounts
         {
             get
@@ -114,12 +116,16 @@ namespace Store.DataModel
                 return orderItemsDict;
             }
         }
+        [NotMapped]
         IEnumerable<IItem> IOrder.Items => OrderItems.Select(oi => oi.Item);
+        [NotMapped]
         ICustomer IOrder.Customer => Customer;
+        [NotMapped]
         ILocation IOrder.Location => Location;
     }
     public partial class Location : ILocation
         {
+            [NotMapped]
             public Dictionary<int, int> ItemCounts
             {
                 get
