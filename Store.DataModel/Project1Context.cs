@@ -28,10 +28,15 @@ namespace Store.DataModel
                 entity.ToTable("Locations");
                 entity.Property(e => e.Name).HasMaxLength(80);
             });
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.ToTable("Orders");
+            });
             modelBuilder.Entity<LocationItem>(entity =>
             {
                 entity.ToTable("LocationItems");
-                entity.HasKey(c => new { c.Location, c.Item });
+                entity.HasKey(c => new { c.LocationId, c.ItemId });
+                
                 entity.HasCheckConstraint(
                     name: "CK_Location_Inventory_Positive",
                     sql: "[ItemCount] > 0"
@@ -40,7 +45,7 @@ namespace Store.DataModel
             modelBuilder.Entity<OrderItem>(entity => 
             {
                 entity.ToTable("OrderItems");
-                entity.HasKey(c => new { c.Order, c.Item });
+                entity.HasKey(c => new { c.OrderId, c.ItemId });
                 entity.HasCheckConstraint(
                     name: "CK_Order_MaxInventory",
                     sql: $"[ItemCount] <= {OrderItem.countMax}"

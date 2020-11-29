@@ -15,11 +15,7 @@ namespace Store.DataModel
         public int Id { get => id; set => id = value; }
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime Placed { get => placed; set => placed = value; }
-        public int CustomerId { get; set; }
-        [ForeignKey("CustomerId")]
         public virtual Customer Customer { get; set; }
-        public int LocationId { get; set; }
-        [ForeignKey("LocationId")]
         public virtual Location Location { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
