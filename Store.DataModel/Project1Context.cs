@@ -31,6 +31,7 @@ namespace Store.DataModel
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.ToTable("Orders");
+                entity.Property(t => t.Placed).HasComputedColumnSql("GETDATE()");
             });
             modelBuilder.Entity<LocationItem>(entity =>
             {
