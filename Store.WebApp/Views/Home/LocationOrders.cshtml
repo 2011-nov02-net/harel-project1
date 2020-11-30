@@ -31,7 +31,7 @@
             </th>*@
             @foreach (ItemModel item in ( (IEnumerable<ItemModel>) ViewData["Items"]))
             {
-                <th>@Html.Display(item.Name)</th>
+                <th>@item.Name</th>
             }
         </tr>
     </thead>

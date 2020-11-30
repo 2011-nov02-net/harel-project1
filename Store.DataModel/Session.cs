@@ -20,8 +20,8 @@ namespace Store.DataModel
             get
             {
                 return _context.Orders
-                .Include(x => x.Customer).ThenInclude(x => x.Name)
-                .Include(x => x.Location).ThenInclude(x => x.Name)
+                .Include(x => x.Customer)
+                .Include(x => x.Location)
                 .Include(x => x.OrderItems).ThenInclude(x => x.Item)
                 .ToList().AsQueryable();
             }
