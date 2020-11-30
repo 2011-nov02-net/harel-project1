@@ -13,7 +13,5 @@ namespace Store
         void AddCustomer(string name);
         void AddLocation(string name, Dictionary<int, int> itemCounts);
         void AddOrder(ICustomer customer, ILocation location, Dictionary<int, int> itemCounts);
-        IEnumerable<IOrder> OrderHistory(ILocation location);
-        IEnumerable<IOrder> OrderHistory(ICustomer customer);
     }
 }

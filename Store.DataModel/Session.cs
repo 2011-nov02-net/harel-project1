@@ -90,18 +90,11 @@ namespace Store.DataModel
                         ItemCount = kv.Value
                     }
                 );
+                _context.Locations
+                    .Find(location.Id).LocationItems
+                    .First(li => li.ItemId == kv.Key).ItemCount -= kv.Value;
             }
             _context.SaveChanges();
-        }
-
-        public IEnumerable<IOrder> OrderHistory(ILocation location)
-        {
-            return _context.Orders.Where(o => o.LocationId == location.Id).ToList();
-        }
-
-        public IEnumerable<IOrder> OrderHistory(ICustomer customer)
-        {
-            return _context.Orders.Where(o => o.CustomerId == customer.Id).ToList();
         }
     }
     public partial class Item : IItem {}

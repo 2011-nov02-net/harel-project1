@@ -83,8 +83,9 @@ namespace Store.WebApp.Controllers
             }
             catch (Exception e)
             {
+                var LocationId = Convert.ToInt32(collection["LocationId"]);
                 var model = new AddOrderViewModel(
-                _session.Locations.First(),
+                _session.Locations.First(l => l.Id == LocationId),
                 _session.Customers.ToList().AsQueryable(),
                 _session.Items.ToList().AsQueryable());
                 Console.WriteLine(e);
