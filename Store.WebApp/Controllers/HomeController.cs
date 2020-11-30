@@ -102,14 +102,8 @@ namespace Store.WebApp.Controllers
             try
             {
                 var myLocation = _session.Locations.First(x => x.Id == id);
-<<<<<<< HEAD
-                var myOrders   =(_session.OrderHistory(myLocation) as DbSet<Order>) // OrderHistory is null
-                    .Include(x => x.Customer).Include(x => x.Location);
-                foreach (var order in myOrders) Console.WriteLine(order);   
-=======
                 //var myOrders   = _session.OrderHistory(myLocation);
                 var myOrders = _session.Orders.ToList().Where(o => o.LocationId == myLocation.Id).AsEnumerable();
->>>>>>> 6c71fb7eaedade01708e23985ece1e5623f66f37
                 ViewData["Location"] = new LocationModel(myLocation, _session.Items);
                 ViewData["Items"] = _session.Items.ToList().Where(x =>
                     myOrders.Any(y =>
