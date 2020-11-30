@@ -52,7 +52,7 @@
             </th>*@
             @foreach (ItemModel item in ( (IEnumerable<ItemModel>) ViewData["Items"]))
             {
-                <td>@Html.DisplayFor(model => order.ItemCounts.ElementAtOrDefault(item.Id))</td>
+                <td>@Html.DisplayFor(model => order.ItemCounts.ElementAtOrDefault(item.Id).Value)</td>
             }
         </tr>
 }
