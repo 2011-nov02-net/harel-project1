@@ -100,12 +100,17 @@ namespace Store.WebApp.Controllers
             {
                 var myLocation = _session.Locations.First(x => x.Id == id);
                 var myOrders   = _session.OrderHistory(myLocation);
-                ViewData["Location"] = myLocation;
-                /*ViewData["Items"] = _session.Items.Where(x =>
+                ViewData["Location"] = new LocationModel(myLocation, _session.Items);
+                ViewData["Items"] = _session.Items.ToList().Where(x =>
                     myOrders.Any(y =>
                         y.ItemCounts.ContainsKey(x.Id) )
-                    ).AsEnumerable();
-                ViewBag.location = myLocation;*/
+                    ).Select(x => new ItemModel(x)).AsEnumerable();
+                // ViewBag.location = myLocation;
+                /*
+                var myItems = Model.Select(o => o.Items)
+                .Aggregate((x, y) => x.Concat(y))
+                .Distinct().OrderBy(item => item.Id);
+                */
                 return View(myOrders);
             }
             catch (InvalidOperationException e)
@@ -120,12 +125,17 @@ namespace Store.WebApp.Controllers
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
                 var myOrders   = _session.OrderHistory(myCustomer);
-                ViewData["Customer"] = myCustomer;
-                /*ViewData["Items"] = _session.Items.Where(x =>
+                ViewData["Customer"] = new CustomerModel(myCustomer);
+                ViewData["Items"] = _session.Items.ToList().Where(x =>
                     myOrders.Any(y =>
                         y.ItemCounts.ContainsKey(x.Id) )
-                    ).AsEnumerable();
-                ViewBag.customer = myCustomer;*/
+                    ).Select(x => new ItemModel(x)).AsEnumerable();
+                // ViewBag.customer = myCustomer;
+                /*
+                var myItems = Model.Select(o => o.Items)
+                .Aggregate((x, y) => x.Concat(y))
+                .Distinct().OrderBy(item => item.Id);
+                */                
                 return View(myOrders);
             }
             catch (InvalidOperationException e)

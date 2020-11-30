@@ -22,7 +22,7 @@ namespace Store.DataModel
                 .Include(x => x.Customer)
                 .Include(x => x.Location)
                 .Include(x => x.OrderItems).ThenInclude(x => x.Item)
-                .AsQueryable();
+                .ToList().AsQueryable();
             }
         }
         public IQueryable<ILocation> Locations
@@ -95,12 +95,12 @@ namespace Store.DataModel
 
         public IEnumerable<IOrder> OrderHistory(ILocation location)
         {
-            return _context.Locations.Find(location.Id).Orders.ToList();
+            return _context.Orders.Where(o => o.LocationId == location.Id).ToList();
         }
 
         public IEnumerable<IOrder> OrderHistory(ICustomer customer)
         {
-            return _context.Customers.Find(customer.Id).Orders.ToList();
+            return _context.Orders.Where(o => o.CustomerId == customer.Id).ToList();
         }
     }
     public partial class Item : IItem {}
@@ -113,11 +113,15 @@ namespace Store.DataModel
             get
             {
                 var orderItemsDict = new Dictionary<int,int>();
-                foreach (var io in OrderItems) orderItemsDict.Add(io.Item.Id, io.ItemCount);
+                foreach (var io in OrderItems) 
+                {
+                    orderItemsDict.Add(io.Item.Id, io.ItemCount);
+                }
                 return orderItemsDict;
             }
         }
-        IEnumerable<IItem> IOrder.Items => OrderItems.Select(oi => oi.Item);
+        [NotMapped]
+        IEnumerable<IItem> IOrder.Items => OrderItems.Select(oi => oi.Item).ToList();
         ICustomer IOrder.Customer => Customer;  
         ILocation IOrder.Location => Location;
     }

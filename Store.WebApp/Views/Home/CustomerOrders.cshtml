@@ -2,9 +2,6 @@
 
 @{
     ViewData["Title"] = "Project 1 - Store App";
-    var myItems = Model.Select(o => o.Items)
-        .Aggregate((x, y) => x.Concat(y))
-        .Distinct().OrderBy(item => item.Id);
 }
 
 <div class="text-center">
@@ -32,7 +29,7 @@
             @*<th>
                 @Html.DisplayName(CustomerModel.Id)
             </th>*@
-            @foreach (var item in myItems)
+            @foreach (ItemModel item in ( (IEnumerable<ItemModel>) ViewData["Items"]))
             {
                 <th>@Html.Display(item.Name)</th>
             }
@@ -53,7 +50,7 @@
             @*<th>
                 @Html.DisplayName(customerM.Id)
             </th>*@
-            @foreach (var item in myItems)
+            @foreach (ItemModel item in ( (IEnumerable<ItemModel>) ViewData["Items"]))
             {
                 <td>@Html.DisplayFor(model => order.ItemCounts.ElementAtOrDefault(item.Id))</td>
             }

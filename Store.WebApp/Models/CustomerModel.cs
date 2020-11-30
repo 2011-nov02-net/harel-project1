@@ -4,7 +4,6 @@ namespace Store.WebApp.Models
 {
     public class CustomerModel : ICustomer
     {
-        
         private int _id;
         private string _name;
         public CustomerModel() { }
