@@ -180,7 +180,7 @@ namespace Store.DataModel.Migrations
             modelBuilder.Entity("Store.DataModel.OrderItem", b =>
                 {
                     b.HasOne("Store.DataModel.Item", "Item")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -199,6 +199,11 @@ namespace Store.DataModel.Migrations
             modelBuilder.Entity("Store.DataModel.Customer", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Store.DataModel.Item", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("Store.DataModel.Location", b =>

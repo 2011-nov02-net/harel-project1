@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Store.WebApp.Models;
 
+using Microsoft.EntityFrameworkCore;
+using Store.DataModel;
+
 namespace Store.WebApp.Controllers
 {
     public class HomeController : Controller
@@ -99,11 +102,13 @@ namespace Store.WebApp.Controllers
             try
             {
                 var myLocation = _session.Locations.First(x => x.Id == id);
-                var myOrders   = _session.OrderHistory(myLocation);
+                var myOrders   =(_session.OrderHistory(myLocation) as DbSet<Order>) // OrderHistory is null
+                    .Include(x => x.Customer).Include(x => x.Location);
+                foreach (var order in myOrders) Console.WriteLine(order);   
                 ViewData["Location"] = new LocationModel(myLocation, _session.Items);
                 ViewData["Items"] = _session.Items.ToList().Where(x =>
                     myOrders.Any(y =>
-                        y.ItemCounts.ContainsKey(x.Id) )
+                        (y as IOrder).ItemCounts.ContainsKey(x.Id) )
                     ).Select(x => new ItemModel(x)).AsEnumerable();
                 // ViewBag.location = myLocation;
                 /*

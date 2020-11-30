@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -19,8 +20,8 @@ namespace Store.DataModel
             get
             {
                 return _context.Orders
-                .Include(x => x.Customer)
-                .Include(x => x.Location)
+                .Include(x => x.Customer).ThenInclude(x => x.Name)
+                .Include(x => x.Location).ThenInclude(x => x.Name)
                 .Include(x => x.OrderItems).ThenInclude(x => x.Item)
                 .ToList().AsQueryable();
             }
@@ -107,6 +108,12 @@ namespace Store.DataModel
     public partial class Customer : ICustomer { }
     public partial class Order : IOrder
     {
+        public override string ToString()
+        {
+            return $"Location: {Location.Name}, Customer:{Customer.Name}\n" + 
+                $"Id: {Id}, {Placed}\n" + String.Join(", ",
+                OrderItems.Select(x => $"{x.Item.Name}: {x.ItemCount}").ToList() );
+        }
         [NotMapped]
         Dictionary<int, int> IOrder.ItemCounts
         {
@@ -121,7 +128,7 @@ namespace Store.DataModel
             }
         }
         [NotMapped]
-        IEnumerable<IItem> IOrder.Items => OrderItems.Select(oi => oi.Item).ToList();
+        IEnumerable<IItem> IOrder.Items => OrderItems.Select(oi => oi.Item);
         ICustomer IOrder.Customer => Customer;  
         ILocation IOrder.Location => Location;
     }

@@ -32,6 +32,8 @@ namespace Store.DataModel
             {
                 entity.ToTable("Orders");
                 entity.Property(t => t.Placed).HasComputedColumnSql("GETDATE()");
+                entity.HasOne(d => d.Customer).WithMany(p => p.Orders).HasForeignKey(d => d.CustomerId);
+                entity.HasOne(d => d.Location).WithMany(p => p.Orders).HasForeignKey(d => d.LocationId);
             });
             modelBuilder.Entity<LocationItem>(entity =>
             {
@@ -55,6 +57,7 @@ namespace Store.DataModel
                     name: "CK_Order_Inventory_Positive",
                     sql: "[ItemCount] > 0"
                 );
+                entity.HasOne(d => d.Item).WithMany(p => p.OrderItems).HasForeignKey(d => d.ItemId);
             });
         }
         public Project1Context(DbContextOptions<Project1Context> options) : base(options) { }

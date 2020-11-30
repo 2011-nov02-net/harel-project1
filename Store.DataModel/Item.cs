@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Store.DataModel
@@ -14,5 +15,6 @@ namespace Store.DataModel
         [Required]
         [MaxLength(80)]
         public string Name { get => name; set => name = value; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }
