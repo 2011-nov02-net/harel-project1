@@ -99,7 +99,8 @@ namespace Store.WebApp.Controllers
             try
             {
                 var myLocation = _session.Locations.First(x => x.Id == id);
-                var myOrders   = _session.OrderHistory(myLocation);
+                //var myOrders   = _session.OrderHistory(myLocation);
+                var myOrders = _session.Orders.ToList().Where(o => o.LocationId == myLocation.Id).AsEnumerable();
                 ViewData["Location"] = new LocationModel(myLocation, _session.Items);
                 ViewData["Items"] = _session.Items.ToList().Where(x =>
                     myOrders.Any(y =>
@@ -124,7 +125,8 @@ namespace Store.WebApp.Controllers
             try
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
-                var myOrders   = _session.OrderHistory(myCustomer);
+                //var myOrders   = _session.OrderHistory(myCustomer);
+                var myOrders = _session.Orders.ToList().Where(o => o.CustomerId == myCustomer.Id).AsEnumerable();
                 ViewData["Customer"] = new CustomerModel(myCustomer);
                 ViewData["Items"] = _session.Items.ToList().Where(x =>
                     myOrders.Any(y =>
