@@ -50,9 +50,9 @@
             @*<th>
                 @Html.DisplayName(customerM.Id)
             </th>*@
-            @foreach (ItemModel item in ( (IEnumerable<ItemModel>) ViewData["Items"]))
+            @foreach (ItemModel item in (ViewData["Items"] as IEnumerable<ItemModel>))
             {
-                <td>@Html.DisplayFor(model => order.ItemCounts.ElementAtOrDefault(item.Id).Value)</td>
+                <td>@(order.ItemCounts.ContainsKey(item.Id) ? order.ItemCounts[item.Id] : 0)</td>
             }
         </tr>
 }

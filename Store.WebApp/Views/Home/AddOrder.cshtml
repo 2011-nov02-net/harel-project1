@@ -1,9 +1,11 @@
 @model Store.WebApp.Models.AddOrderViewModel
 
-<h1>Place Order</h1>
+<h1>Place Order at @Model.Location.Name</h1>
 
 <hr />
 
+@if (Model.Location.items.Any())
+{
 <div class="row">
     <div class="col-md-4">
         <form asp-action="AddOrder" method="post">
@@ -33,6 +35,14 @@
         </form>
     </div>
 </div>
+} else
+{
+    <div class="text-center">
+        <h2 class="display-4">
+            Sold Out
+        </h2>
+    </div>
+}
 @*
 @foreach (var kv in Model.Location.ItemCounts)
 {

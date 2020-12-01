@@ -23,7 +23,7 @@ namespace Store.DataModel
                 .Include(x => x.Customer)
                 .Include(x => x.Location)
                 .Include(x => x.OrderItems).ThenInclude(x => x.Item)
-                .ToList().AsQueryable();
+                .AsQueryable();
             }
         }
         public IQueryable<ILocation> Locations
@@ -32,7 +32,7 @@ namespace Store.DataModel
             {
                 return _context.Locations
                 .Include(x => x.LocationItems).ThenInclude(x => x.Item)
-                .ToList().AsQueryable();
+                .AsQueryable();
             }
         }
         public IQueryable<ICustomer> Customers
@@ -43,7 +43,6 @@ namespace Store.DataModel
         {
             get => _context.Items.AsQueryable();
         }
-
         public void AddCustomer(string name)
         {
             _context.Customers.Add(new Customer{ Name = name });
@@ -66,18 +65,19 @@ namespace Store.DataModel
                     {
                         Location = location,
                         Item = _context.Items.Find(kv.Key),
-                        ItemCount = kv.Value }
+                        ItemCount = kv.Value 
+                    }
                 );
             }
             _context.SaveChanges();
         }
-
         public void AddOrder(ICustomer customer, ILocation location, Dictionary<int, int> itemCounts)
         {
+            var myLocation = _context.Locations.Find(location.Id);
             var order = new Order
             {
                 Customer = _context.Customers.Find(customer.Id),
-                Location = _context.Locations.Find(location.Id),
+                Location = myLocation,
             };
             _context.Orders.Add(order);
             foreach (var kv in itemCounts)
@@ -90,15 +90,15 @@ namespace Store.DataModel
                         ItemCount = kv.Value
                     }
                 );
-                _context.Locations
-                    .Find(location.Id).LocationItems
-                    .First(li => li.ItemId == kv.Key).ItemCount -= kv.Value;
+                var itemL = myLocation.LocationItems.First(li => li.ItemId == kv.Key);
+                itemL.ItemCount -= kv.Value;
+                if (itemL.ItemCount == 0) _context.LocationItems.Remove(itemL);
             }
             _context.SaveChanges();
         }
     }
     public partial class Item : IItem {}
-    public partial class Customer : ICustomer { }
+    public partial class Customer : ICustomer {}
     public partial class Order : IOrder
     {
         public override string ToString()
@@ -113,10 +113,7 @@ namespace Store.DataModel
             get
             {
                 var orderItemsDict = new Dictionary<int,int>();
-                foreach (var io in OrderItems) 
-                {
-                    orderItemsDict.Add(io.Item.Id, io.ItemCount);
-                }
+                foreach (var io in OrderItems) orderItemsDict.Add(io.Item.Id, io.ItemCount);
                 return orderItemsDict;
             }
         }
@@ -133,7 +130,7 @@ namespace Store.DataModel
                 get
                 {
                     var locationItemsDict = new Dictionary<int,int>();
-                    foreach (var io in LocationItems) locationItemsDict.Add(io.Item.Id, io.ItemCount);
+                    foreach (var lo in LocationItems) locationItemsDict.Add(lo.Item.Id, lo.ItemCount);
                     return locationItemsDict;
                 }
             }

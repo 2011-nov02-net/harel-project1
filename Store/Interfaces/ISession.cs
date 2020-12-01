@@ -12,6 +12,8 @@ namespace Store
         void AddItem(string name);
         void AddCustomer(string name);
         void AddLocation(string name, Dictionary<int, int> itemCounts);
-        void AddOrder(ICustomer customer, ILocation location, Dictionary<int, int> itemCounts);
+        void AddOrder(ICustomer customer, 
+                      ILocation location, 
+                      Dictionary<int, int> itemCounts);
     }
 }
