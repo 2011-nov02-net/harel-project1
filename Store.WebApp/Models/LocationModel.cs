@@ -10,7 +10,11 @@ namespace Store.WebApp.Models
         private string name;
         public readonly List<ItemModel> items;
         public readonly List<int> itemCounts;
-
+        public LocationModel(ILocation location)
+        {
+            id = location.Id;
+            name = location.Name;
+        }
         public LocationModel(ILocation location, IQueryable<IItem> allItems)
         {
             id = location.Id;
@@ -24,9 +28,10 @@ namespace Store.WebApp.Models
                 itemCounts.Add(kv.Value);
             }
         }
-
+        [Display(Name = "Location Id")]
         public int Id { get => id; set => id = value; }
-        [DisplayFormat()]
+        //[DisplayFormat()]
+        [Display(Name = "Location Name")]
         public string Name { get => name; set => name = value;}
         public Dictionary<int, int> ItemCounts
         {

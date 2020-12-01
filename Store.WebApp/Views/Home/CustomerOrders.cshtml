@@ -13,12 +13,12 @@
 @if (Model.Any())
 {
     var anOrder = Model.First();
-    var aLocation = Model.First().Location;
+    var aLocation = new LocationModel(Model.First().Location);
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => anOrder.Id)
+                Order @Html.DisplayNameFor(model => anOrder.Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => anOrder.Placed)

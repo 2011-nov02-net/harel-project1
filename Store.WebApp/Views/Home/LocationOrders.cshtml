@@ -13,12 +13,12 @@
 @if (Model.Any())
 {
     var anOrder = Model.First();
-    var aCustomer = Model.First().Customer;
+    var aCustomer = new CustomerModel(Model.First().Customer);
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => anOrder.Id)
+                Order @Html.DisplayNameFor(model => anOrder.Id)
             </th>
             <th>
                 @Html.DisplayNameFor(model => anOrder.Placed)

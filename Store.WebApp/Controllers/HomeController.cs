@@ -8,9 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Store.WebApp.Models;
 
-using Microsoft.EntityFrameworkCore;
-using Store.DataModel;
-
 namespace Store.WebApp.Controllers
 {
     public class HomeController : Controller
@@ -26,7 +23,8 @@ namespace Store.WebApp.Controllers
 
         public IActionResult Index()
         {
-            return View(_session.Locations.AsEnumerable());
+            return View(_session.Locations.ToList()
+                .Select(l => new LocationModel(l, _session.Items)));   
         }
         public IActionResult AddCustomer()
         {
