@@ -24,23 +24,21 @@ namespace Store.Test
             var item2 = new Item { Name = "Item2"};
             context.Items.Add(item1);
             context.Items.Add(item2);
-            var location2 = new Location { Name = "Location2"};
+            
             var location1 = new Location { Name = "Location1"};
             context.Locations.Add(location1);
-            context.Locations.Add(location2);
-            context.LocationItem.Add(new LocationItem {
+            location1.LocationItems.Add(new LocationItem {
                 Item = item1,
-                Location = location1,
                 ItemCount = 21
             });
-            context.LocationItem.Add(new LocationItem {
+            location1.LocationItems.Add(new LocationItem {
                 Item = item2,
-                Location = location1,
                 ItemCount = 8
             });
-            context.LocationItem.Add(new LocationItem {
+            var location2 = new Location { Name = "Location2"};
+            context.Locations.Add(location2);
+            location2.LocationItems.Add(new LocationItem {
                 Item = item1,
-                Location = location2,
                 ItemCount = 5
             });
             context.SaveChanges();
@@ -52,7 +50,7 @@ namespace Store.Test
         public void TestAddCustomer(string name)
         {
             using var context = new Project1Context(_options);
-            var session = new Session(context);
+            var session = new Repository(context);
             session.AddCustomer(name);
             Assert.Contains(name, session.Customers.Select(x => x.Name));
         }
@@ -62,7 +60,7 @@ namespace Store.Test
         {
         //Given
         using var context = new Project1Context(_options);
-        var session = new Session(context);
+        var session = new Repository(context);
         //When
         session.AddItem(name);
         //Then
