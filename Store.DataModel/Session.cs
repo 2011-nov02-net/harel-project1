@@ -7,11 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Store.DataModel
 {
-    public class Session : ISession
+    public class Repository : IRepository
     {
         private readonly Project1Context _context;
 
-        public Session(Project1Context context) {
+        public Repository(Project1Context context) {
             _context = context;
         }
 
@@ -110,12 +110,18 @@ namespace Store.DataModel
         [NotMapped]
         Dictionary<int, int> IOrder.ItemCounts
         {
-            get
-            {
-                var orderItemsDict = new Dictionary<int,int>();
-                foreach (var io in OrderItems) orderItemsDict.Add(io.Item.Id, io.ItemCount);
-                return orderItemsDict;
-            }
+            get => OrderItems.ToDictionary(o => o.ItemId, o => o.ItemCount);
+            // {
+            //     var orderItemsDict = new Dictionary<int,int>();
+            //     foreach (var io in OrderItems) orderItemsDict.Add(io.Item.Id, io.ItemCount);
+            //     return orderItemsDict; 
+            // }
+            // set
+            // {
+            //     OrderItems = new List<OrderItem>();
+            //     foreach (var kv in value) OrderItems.Add(new OrderItem 
+            //         { ItemId = kv.Key, ItemCount = kv.Value });
+            // }
         }
         [NotMapped]
         IEnumerable<IItem> IOrder.Items => OrderItems.Select(oi => oi.Item);
@@ -127,12 +133,18 @@ namespace Store.DataModel
             [NotMapped]
             public Dictionary<int, int> ItemCounts
             {
-                get
-                {
-                    var locationItemsDict = new Dictionary<int,int>();
-                    foreach (var lo in LocationItems) locationItemsDict.Add(lo.Item.Id, lo.ItemCount);
-                    return locationItemsDict;
-                }
+                get => LocationItems.ToDictionary(l => l.ItemId, l => l.ItemCount);
+                // {
+                //     var locationItemsDict = new Dictionary<int,int>();
+                //     foreach (var lo in LocationItems) locationItemsDict.Add(lo.Item.Id, lo.ItemCount);
+                //     return locationItemsDict;
+                // }
+                // set
+                // {
+                //     LocationItems = new List<LocationItem>();
+                //     foreach (var kv in value) LocationItems.Add(new LocationItem
+                //         { LocationId = kv.Key, ItemCount = kv.Value });
+                // }
             }
         }
 }

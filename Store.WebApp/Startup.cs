@@ -40,7 +40,7 @@ namespace Store.WebApp
             //services.AddLogging(lb => lb.AddEventLog()); // FIXME: lookpu AddLogging
             services.AddDbContext<Project1Context>(optionsBuilder => 
                 optionsBuilder.UseSqlServer(GetConnectionString(connectionStringPath)));
-            services.AddScoped<ISession, Session>();
+            services.AddScoped<IRepository, Repository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddControllersWithViews();
         }

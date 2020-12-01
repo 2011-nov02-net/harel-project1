@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Store
 {
-    public interface ISession
+    public interface IRepository
     {
         IQueryable<IOrder> Orders {get;}
         IQueryable<ICustomer> Customers {get;}

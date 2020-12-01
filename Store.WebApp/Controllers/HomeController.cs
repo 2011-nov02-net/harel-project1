@@ -13,9 +13,9 @@ namespace Store.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ISession _session;
+        private readonly IRepository _session;
 
-        public HomeController(ILogger<HomeController> logger, ISession session)
+        public HomeController(ILogger<HomeController> logger, IRepository session)
         {
             _logger = logger;
             _session = session;
