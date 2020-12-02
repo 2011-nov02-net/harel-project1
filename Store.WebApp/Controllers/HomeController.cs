@@ -73,7 +73,7 @@ namespace Store.WebApp.Controllers
                     if (skey.StartsWith("item_")) {
                         var myItemId = Convert.ToInt32(skey.Remove(0, 5));
                         var myItemCount = Convert.ToInt32(collection[skey]);
-                        itemCounts.Add(myItemId, myItemCount);
+                        if (myItemCount > 0) itemCounts.Add(myItemId, myItemCount);
                     }
                 }
                 _session.AddOrder(orderCustomer, orderLocation, itemCounts); // Error on this line
