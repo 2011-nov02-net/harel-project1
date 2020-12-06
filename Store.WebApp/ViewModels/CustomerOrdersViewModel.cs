@@ -4,17 +4,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Store.WebApp.Models
 {
-    public class LocationOrdersViewModel
+    public class CustomerOrdersViewModel
     {
         public IEnumerable<IOrder> Orders {get; set;}
         public IEnumerable<ItemModel> Items {get; set;}
-        public LocationModel Location {get; set;}
-        public LocationOrdersViewModel (
-            LocationModel location, 
+        public CustomerModel Customer {get; set;}
+        public CustomerOrdersViewModel(
+            CustomerModel customer,
             IEnumerable<ItemModel> items,
             IEnumerable<IOrder> orders)
         {
-            Location = location;
+            Customer = customer;
             Items = items;
             Orders = orders;
         }

@@ -129,8 +129,7 @@ namespace Store.WebApp.Controllers
                     _session.Items.ToList().Where(x => myOrders.Any(y =>
                         (y as IOrder).ItemCounts.ContainsKey(x.Id) ) )
                         .Select(x => new ItemModel(x)).AsEnumerable(),
-                         _session.Orders.ToList()
-                            .Where(o => o.LocationId == myLocation.Id).AsEnumerable());
+                    myOrders);
                 return View(model);
             }
             catch (InvalidOperationException e)
@@ -146,29 +145,31 @@ namespace Store.WebApp.Controllers
                 var myCustomer = _session.Customers.First(x => x.Id == id);
                 //var myOrders   = _session.OrderHistory(myCustomer);
                 var myOrders = _session.Orders.ToList().Where(o => o.CustomerId == myCustomer.Id).AsEnumerable();
-                ViewData["Customer"] = new CustomerModel(myCustomer);
-                ViewData["Items"] = _session.Items.ToList().Where(x =>
-                    myOrders.Any(y =>
-                        y.ItemCounts.ContainsKey(x.Id) )
-                    ).Select(x => new ItemModel(x)).AsEnumerable();
+                // ViewData["Customer"] = new CustomerModel(myCustomer);
+                // ViewData["Items"] = _session.Items.ToList().Where(x =>
+                //     myOrders.Any(y =>
+                //         y.ItemCounts.ContainsKey(x.Id) )
+                //     ).Select(x => new ItemModel(x)).AsEnumerable();
+                // return View(myOrders);
                 // ViewBag.customer = myCustomer;
                 /*
                 var myItems = Model.Select(o => o.Items)
                 .Aggregate((x, y) => x.Concat(y))
                 .Distinct().OrderBy(item => item.Id);
                 */                
-                return View(myOrders);
+                var model = new CustomerOrdersViewModel(
+                    new CustomerModel(myCustomer),
+                    _session.Items.ToList().Where(x =>
+                        myOrders.Any(y => y.ItemCounts.ContainsKey(x.Id) ) )
+                        .Select(x => new ItemModel(x)).AsEnumerable(),
+                    myOrders);
+                return View(model);
             }
             catch (InvalidOperationException e)
             {
-                Console.WriteLine(e);
+                _logger.LogError(e, "Reading Add Order Form");
                 return RedirectToAction(nameof(Index));
             }
-        }
-        public IActionResult DisplayOrders()
-        {
-            return View(); // FIXME figure out how to take a general pair (int? LocationId, int? CustomerId)
-            // and filter orders by one or both.
         }
         public IActionResult Privacy()
         {
