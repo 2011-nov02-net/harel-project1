@@ -1,4 +1,4 @@
-@model IEnumerable<Store.IOrder>
+@model CustomerOrdersViewModel
 
 @{
     ViewData["Title"] = "Project 1 - Store App";
@@ -6,14 +6,14 @@
 
 <div class="text-center">
     <h1 class="display-4">
-        Orders placed by @Html.DisplayFor(modelItem => ((CustomerModel) ViewData["Customer"]).Name)
+        Orders placed by @Html.DisplayFor(modelItem => Model.Customer.Name)
     </h1>
 </div>
 
-@if (Model.Any())
+@if (Model.Orders.Any())
 {
-    var anOrder = Model.First();
-    var aLocation = new LocationModel(Model.First().Location);
+    var anOrder = Model.Orders.First();
+    var aLocation = new LocationModel(Model.Orders.First().Location);
 <table class="table">
     <thead>
         <tr>
@@ -29,14 +29,14 @@
             @*<th>
                 @Html.DisplayName(CustomerModel.Id)
             </th>*@
-            @foreach (ItemModel item in ( (IEnumerable<ItemModel>) ViewData["Items"]))
+            @foreach (ItemModel item in Model.Items)
             {
                 <th>@item.Name</th>
             }
         </tr>
     </thead>
     <tbody>
-@foreach (var order in Model) {
+@foreach (var order in Model.Orders) {
         <tr>
             <td>
                 @Html.DisplayFor(model => order.Id)
@@ -50,7 +50,7 @@
             @*<th>
                 @Html.DisplayName(customerM.Id)
             </th>*@
-            @foreach (ItemModel item in (ViewData["Items"] as IEnumerable<ItemModel>))
+            @foreach (ItemModel item in Model.Items)
             {
                 <td>@(order.ItemCounts.ContainsKey(item.Id) ? order.ItemCounts[item.Id] : 0)</td>
             }
