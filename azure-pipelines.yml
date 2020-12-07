@@ -3,13 +3,12 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-
-
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
   buildConfiguration: 'Release'
+
 variables:
 - name: BuildParameters.RestoreBuildProjects
   value: '**/*.csproj'
@@ -47,11 +46,11 @@ jobs:
     displayName: Prepare analysis on SonarCloud
     continueOnError: True
     inputs:
-      SonarCloud: fd9fc458-5f3f-449a-96e5-852e3c8115e4
-      organization: 2011-nov02-net
-      projectKey: 2011-nov02-net_harel-project1
-      projectName: harel-project1
-      scannerMode: MSBuild
+      SonarCloud: 'fd9fc458-5f3f-449a-96e5-852e3c8115e4'
+      organization: '2011-nov02-net'
+      scannerMode: 'MSBuild'
+      projectKey: '2011-nov02-net_harel-project1'
+      projectName: 'harel-project1'
       extraProperties: 'sonar.exclusions=**/lib/**'
   - task: DotNetCoreCLI@2
     displayName: Restore
@@ -65,9 +64,7 @@ jobs:
       projects: '$(BuildParameters.RestoreBuildProjects)'
       arguments: '--configuration $(BuildConfiguration)'
       #workingDirectory: 'Store.WebApp'
-  - task: SonarCloudAnalyze@1
-    displayName: Run Code Analysis
-    continueOnError: True
+  
   - task: SonarCloudPublish@1
     displayName: Publish Quality Gate Result
     continueOnError: True
@@ -94,6 +91,6 @@ jobs:
       ConnectionType: 'AzureRM'
       azureSubscription: 'Azure subscription 1(3385faf4-311a-4eab-851a-775463f9a467)'
       appType: 'webApp'
-      WebAppName: 'hellopiplines-windows-harel'
+      WebAppName: 'harel-project1'
       packageForLinux: '$(build.artifactstagingdirectory)/**/*.zip'
 ...
