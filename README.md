@@ -1,4 +1,9 @@
 # harel-project1
+
+[![Build Status](https://dev.azure.com/hmfishbein/revature-training/_apis/build/status/2011-nov02-net.harel-project1?branchName=master)](https://dev.azure.com/hmfishbein/revature-training/_build/latest?definitionId=4&branchName=master)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=2011-nov02-net_harel-project1&metric=alert_status)](https://sonarcloud.io/dashboard?id=2011-nov02-net_harel-project1)
+
 Store Web App on ASP.NET
 
 # Requirements 
