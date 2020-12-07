@@ -63,10 +63,8 @@ jobs:
       projects: '$(BuildParameters.RestoreBuildProjects)'
       arguments: '--configuration $(BuildConfiguration)'
       #workingDirectory: 'Store.WebApp'
-  
-  - task: SonarCloudPublish@1
-    displayName: Publish Quality Gate Result
-    continueOnError: True
+  - task: SonarCloudAnalyze@1
+    displayName: 'Run Analysis on Sonar Cloud'
   - task: DotNetCoreCLI@2
     displayName: Test
     inputs:
@@ -79,6 +77,9 @@ jobs:
       command: publish
       publishWebProjects: True
       arguments: --configuration $(BuildConfiguration) --output "$(build.artifactstagingdirectory)"
+  - task: SonarCloudPublish@1
+    displayName: Publish Quality Gate Result
+    continueOnError: True
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifact
     inputs:
