@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using Xunit;
 using Store.DataModel;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace Store.Test
         internal void populate()
         {
             using var context = new Project1Context(_options);
+            context.Database.EnsureCreated();
             var item1 = new Item { Name = "Item1"};
             var item2 = new Item { Name = "Item2"};
             context.Items.Add(item1);
@@ -41,6 +43,8 @@ namespace Store.Test
                 Item = item1,
                 ItemCount = 5
             });
+            context.Customers.Add(new Customer { Name = "Customer1" });
+            context.Customers.Add(new Customer { Name = "Customer2" });
             context.SaveChanges();
         }
         [Theory]
@@ -67,5 +71,58 @@ namespace Store.Test
         Assert.Contains(name, session.Items.Select(x => x.Name));
         }
         // session.OrderHistory
+        [Fact]
+        public void TestAddLocation()
+        {
+            using var context = new Project1Context(_options);
+            var session = new Repository(context);
+            int i_id = session.Items.First().Id;
+            int i2_id = session.Items.Last().Id;
+            var testd = new Dictionary<int, int> { [i_id] = 10, [i2_id] = 21 };
+            session.AddLocation(" #$#ewje3a3 #(d3+_ ", testd);
+            Assert.Contains(" #$#ewje3a3 #(d3+_ ", session.Locations.Select(x => x.Name));
+            Assert.Contains(testd, session.Locations.Select(x => x.ItemCounts));
+        }
+        [Fact]
+        public void TestAddOrder()
+        {
+            using var context = new Project1Context(_options);
+            var session = new Repository(context);
+            var testd = new Dictionary<int, int> { [session.Items.First().Id] = 3 };
+            session.AddOrder(
+                session.Customers.First(),
+                session.Locations.First(),
+                testd
+            );
+            Assert.Contains(testd, session.Orders.Select(x => x.ItemCounts));
+        }
+        [Fact]
+        public void TestOrderMaxItemsRule()
+        {
+            using var context = new Project1Context(_options);
+            var session = new Repository(context);
+            var testd = new Dictionary<int, int> { [session.Items.First().Id] = 100 };
+            Assert.Throws<DbUpdateException>(new Action(() => 
+                session.AddOrder(
+                    session.Customers.First(),
+                    session.Locations.First(),
+                    testd
+            )));
+            Assert.DoesNotContain(testd, session.Orders.Select(x => x.ItemCounts));
+        }
+        [Fact]
+        public void TestOrderInventoryRule()
+        {
+            using var context = new Project1Context(_options);
+            var session = new Repository(context);
+            var testd = new Dictionary<int, int> { [session.Items.First(x => x.Name == "Item1").Id] = 6 };
+            Assert.ThrowsAny<Exception>(new Action(() => 
+                session.AddOrder(
+                    session.Customers.First(),
+                    session.Locations.First(x => x.Name == "Location2"),
+                    testd
+            )));
+            Assert.DoesNotContain(testd, session.Orders.Select(x => x.ItemCounts));
+        }
     }
 }
