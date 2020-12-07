@@ -15,15 +15,16 @@
     var anOrder = Model.Orders.First();
     var aCustomer = new CustomerModel(Model.Orders.First().Customer);
 <table class="table">
+    <caption>List of orders placed at the given location</caption>
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 Order @Html.DisplayNameFor(model => anOrder.Id)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => anOrder.Placed)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => aCustomer.Name)
             </th>
             @*<th>
@@ -31,7 +32,7 @@
             </th>*@
             @foreach (var item in Model.Items)
             {
-                <th>@item.Name</th>
+                <th scope="col">@item.Name</th>
             }
         </tr>
     </thead>

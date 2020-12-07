@@ -15,23 +15,24 @@
     var anOrder = Model.Orders.First();
     var aLocation = new LocationModel(Model.Orders.First().Location);
 <table class="table">
+    <caption>List of order placed by given customer</caption>
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 Order @Html.DisplayNameFor(model => anOrder.Id)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => anOrder.Placed)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => aLocation.Name)
             </th>
-            @*<th>
+            @*<th scope="col">
                 @Html.DisplayName(CustomerModel.Id)
             </th>*@
             @foreach (ItemModel item in Model.Items)
             {
-                <th>@item.Name</th>
+                <th scope="col">@item.Name</th>
             }
         </tr>
     </thead>
@@ -47,9 +48,9 @@
             <td>
                 @Html.DisplayFor(model => order.Location.Name)
             </td>
-            @*<th>
+            @*<td>
                 @Html.DisplayName(customerM.Id)
-            </th>*@
+            </td>*@
             @foreach (ItemModel item in Model.Items)
             {
                 <td>@(order.ItemCounts.ContainsKey(item.Id) ? order.ItemCounts[item.Id] : 0)</td>
