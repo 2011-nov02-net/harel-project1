@@ -1,0 +1,93 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+variables:
+- name: BuildParameters.RestoreBuildProjects
+  value: '**/*.csproj'
+- name: BuildParameters.TestProjects
+  value: '**/*Tests/*.csproj'
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - /
+  batch: True
+name: $(date:yyyyMMdd)$(rev:.r)
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: master
+jobs:
+- job: Phase_1
+  displayName: Agent job 1
+  timeoutInMinutes: 0
+  pool:
+    vmImage: vs2017-win2016
+  steps:
+  - checkout: self
+  - task: UseDotNet@2
+    displayName: Use .NET Core sdk 5.x
+    inputs:
+      version: 5.x
+      includePreviewVersions: true
+  - task: SonarCloudPrepare@1
+    displayName: Prepare analysis on SonarCloud
+    continueOnError: True
+    inputs:
+      SonarCloud: fd9fc458-5f3f-449a-96e5-852e3c8115e4
+      organization: harelfishbein
+      projectKey: harelfishbein_hellopipelines-12-02-20
+      projectName: hellopipelines
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: $(BuildParameters.RestoreBuildProjects)
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: $(BuildParameters.RestoreBuildProjects)
+      arguments: --configuration $(BuildConfiguration)
+  - task: SonarCloudAnalyze@1
+    displayName: Run Code Analysis
+    continueOnError: True
+  - task: SonarCloudPublish@1
+    displayName: Publish Quality Gate Result
+    continueOnError: True
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    inputs:
+      command: test
+      projects: $(BuildParameters.TestProjects)
+      arguments: --configuration $(BuildConfiguration)
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: publish
+      publishWebProjects: True
+      arguments: --configuration $(BuildConfiguration) --output "$(build.artifactstagingdirectory)"
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Artifact
+    inputs:
+      PathtoPublish: $(build.artifactstagingdirectory)
+      TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
+  - task: AzureRmWebAppDeployment@4
+    displayName: 'Azure App Service Deploy: hellopiplines-windows-harel'
+    inputs:
+      ConnectedServiceName: c60cb5c1-b6dc-4921-9f01-0265abde127c
+      WebAppName: hellopiplines-windows-harel
+      Package: $(build.artifactstagingdirectory)/**/*.zip
+...
