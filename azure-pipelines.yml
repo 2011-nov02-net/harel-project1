@@ -3,8 +3,7 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- main
+
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -20,6 +19,7 @@ trigger:
   branches:
     include:
     - master
+    - main
   paths:
     include:
     - /
@@ -48,9 +48,11 @@ jobs:
     continueOnError: True
     inputs:
       SonarCloud: fd9fc458-5f3f-449a-96e5-852e3c8115e4
-      organization: harelfishbein
-      projectKey: harelfishbein_hellopipelines-12-02-20
-      projectName: hellopipelines
+      organization: 2011-nov02-net
+      projectKey: 2011-nov02-net_harel-project1
+      projectName: harel-project1
+      scannerMode: MSBuild
+      extraProperties: 'sonar.exclusions=**/lib/**'
   - task: DotNetCoreCLI@2
     displayName: Restore
     inputs:
@@ -59,8 +61,10 @@ jobs:
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
-      projects: $(BuildParameters.RestoreBuildProjects)
-      arguments: --configuration $(BuildConfiguration)
+      command: 'build'
+      projects: '$(BuildParameters.RestoreBuildProjects)'
+      arguments: '--configuration $(BuildConfiguration)'
+      #workingDirectory: 'Store.WebApp'
   - task: SonarCloudAnalyze@1
     displayName: Run Code Analysis
     continueOnError: True
@@ -87,7 +91,9 @@ jobs:
   - task: AzureRmWebAppDeployment@4
     displayName: 'Azure App Service Deploy: hellopiplines-windows-harel'
     inputs:
-      ConnectedServiceName: c60cb5c1-b6dc-4921-9f01-0265abde127c
-      WebAppName: hellopiplines-windows-harel
-      Package: $(build.artifactstagingdirectory)/**/*.zip
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Azure subscription 1(3385faf4-311a-4eab-851a-775463f9a467)'
+      appType: 'webApp'
+      WebAppName: 'hellopiplines-windows-harel'
+      packageForLinux: '$(build.artifactstagingdirectory)/**/*.zip'
 ...
