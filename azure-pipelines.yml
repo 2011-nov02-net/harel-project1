@@ -7,9 +7,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
-
-variables:
+- name: buildConfiguration
+  value: 'Release'
 - name: BuildParameters.RestoreBuildProjects
   value: '**/*.csproj'
 - name: BuildParameters.TestProjects
