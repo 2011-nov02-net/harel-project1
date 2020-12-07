@@ -27,9 +27,6 @@
             <th scope="col">
                 @Html.DisplayNameFor(model => aCustomer.Name)
             </th>
-            @*<th>
-                @Html.DisplayName(CustomerModel.Id)
-            </th>*@
             @foreach (var item in Model.Items)
             {
                 <th scope="col">@item.Name</th>
@@ -48,9 +45,6 @@
             <td>
                 @Html.DisplayFor(model => order.Customer.Name)
             </td>
-            @*<th>
-                @Html.DisplayName(customerM.Id)
-            </th>*@
             @foreach (var item in Model.Items)
             {
                 <td>@(order.ItemCounts.ContainsKey(item.Id) ? order.ItemCounts[item.Id] : 0)</td>

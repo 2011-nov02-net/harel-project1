@@ -23,7 +23,7 @@ namespace Store.WebApp.Controllers
 
         public IActionResult Index()
         {
-            return View(_session.Locations.ToList()
+            return View(_session.Locations.AsEnumerable()
                 .Select(l => new LocationModel(l, _session.Items)));   
         }
         public IActionResult AddCustomer()
@@ -51,8 +51,8 @@ namespace Store.WebApp.Controllers
         {
             return View(new AddOrderViewModel(
                 _session.Locations.First(x => x.Id == id),
-                _session.Customers.ToList().AsQueryable(),
-                _session.Items.ToList().AsQueryable()));
+                _session.Customers.AsEnumerable().AsQueryable(),
+                _session.Items.AsEnumerable().AsQueryable()));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -87,8 +87,8 @@ namespace Store.WebApp.Controllers
                     var LocationId = Convert.ToInt32(collection["LocationId"]);
                     return View(new AddOrderViewModel(
                         _session.Locations.First(l => l.Id == LocationId),
-                        _session.Customers.ToList().AsQueryable(),
-                        _session.Items.ToList().AsQueryable()));
+                        _session.Customers.AsEnumerable().AsQueryable(),
+                        _session.Items.AsEnumerable().AsQueryable()));
                 }
                 catch (FormatException)
                 {
@@ -111,9 +111,9 @@ namespace Store.WebApp.Controllers
             {
                 var myLocation = _session.Locations.First(x => x.Id == id);
                 //var myOrders   = _session.OrderHistory(myLocation);
-                var myOrders = _session.Orders.ToList().Where(o => o.LocationId == myLocation.Id).AsEnumerable();
+                var myOrders = _session.Orders.AsEnumerable().Where(o => o.LocationId == myLocation.Id).AsEnumerable();
                 // ViewData["Location"] = new LocationModel(myLocation, _session.Items);
-                // ViewData["Items"] = _session.Items.ToList().Where(x =>
+                // ViewData["Items"] = _session.Items.AsEnumerable().Where(x =>
                 //     myOrders.Any(y =>
                 //         (y as IOrder).ItemCounts.ContainsKey(x.Id) )
                 //     ).Select(x => new ItemModel(x)).AsEnumerable();
@@ -126,7 +126,7 @@ namespace Store.WebApp.Controllers
                 */
                 var model = new LocationOrdersViewModel(
                     new LocationModel(myLocation, _session.Items),
-                    _session.Items.ToList().Where(x => myOrders.Any(y =>
+                    _session.Items.AsEnumerable().Where(x => myOrders.Any(y =>
                         (y as IOrder).ItemCounts.ContainsKey(x.Id) ) )
                         .Select(x => new ItemModel(x)).AsEnumerable(),
                     myOrders);
@@ -144,9 +144,9 @@ namespace Store.WebApp.Controllers
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
                 //var myOrders   = _session.OrderHistory(myCustomer);
-                var myOrders = _session.Orders.ToList().Where(o => o.CustomerId == myCustomer.Id).AsEnumerable();
+                var myOrders = _session.Orders.AsEnumerable().Where(o => o.CustomerId == myCustomer.Id).AsEnumerable();
                 // ViewData["Customer"] = new CustomerModel(myCustomer);
-                // ViewData["Items"] = _session.Items.ToList().Where(x =>
+                // ViewData["Items"] = _session.Items.AsEnumerable().Where(x =>
                 //     myOrders.Any(y =>
                 //         y.ItemCounts.ContainsKey(x.Id) )
                 //     ).Select(x => new ItemModel(x)).AsEnumerable();
@@ -159,7 +159,7 @@ namespace Store.WebApp.Controllers
                 */                
                 var model = new CustomerOrdersViewModel(
                     new CustomerModel(myCustomer),
-                    _session.Items.ToList().Where(x =>
+                    _session.Items.AsEnumerable().Where(x =>
                         myOrders.Any(y => y.ItemCounts.ContainsKey(x.Id) ) )
                         .Select(x => new ItemModel(x)).AsEnumerable(),
                     myOrders);
