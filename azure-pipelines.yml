@@ -63,10 +63,8 @@ jobs:
       projects: '$(BuildParameters.RestoreBuildProjects)'
       arguments: '--configuration $(BuildConfiguration)'
       #workingDirectory: 'Store.WebApp'
-  
-  - task: SonarCloudPublish@1
-    displayName: Publish Quality Gate Result
-    continueOnError: True
+  - task: SonarCloudAnalyze@1
+    displayName: 'Run Analysis on Sonar Cloud'
   - task: DotNetCoreCLI@2
     displayName: Test
     inputs:
@@ -79,13 +77,16 @@ jobs:
       command: publish
       publishWebProjects: True
       arguments: --configuration $(BuildConfiguration) --output "$(build.artifactstagingdirectory)"
+  - task: SonarCloudPublish@1
+    displayName: Publish Quality Gate Result
+    continueOnError: True
   - task: PublishBuildArtifacts@1
     displayName: Publish Artifact
     inputs:
       PathtoPublish: $(build.artifactstagingdirectory)
       TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
   - task: AzureRmWebAppDeployment@4
-    displayName: 'Azure App Service Deploy: hellopiplines-windows-harel'
+    displayName: 'Azure App Service Deploy: harel-project1'
     inputs:
       ConnectionType: 'AzureRM'
       azureSubscription: 'Azure subscription 1(3385faf4-311a-4eab-851a-775463f9a467)'

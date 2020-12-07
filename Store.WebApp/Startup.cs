@@ -19,7 +19,13 @@ namespace Store.WebApp
 {
     public class Startup
     {
-        const string connectionStringPath = "../connectionString.txt";
+        /* const string connectionStringPath = "../connectionString.txt";
+        static string GetConnectionString(string path)
+        {
+            string connectionString;
+            connectionString = File.ReadAllText(path);
+            return connectionString;
+        }*/
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Environment = env;
@@ -29,17 +35,11 @@ namespace Store.WebApp
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
-        static string GetConnectionString(string path)
-        {
-            string connectionString;
-            connectionString = File.ReadAllText(path);
-            return connectionString;
-        }
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddLogging(lb => lb.AddEventLog()); // FIXME: lookpu AddLogging
             services.AddDbContext<Project1Context>(optionsBuilder => 
-                optionsBuilder.UseSqlServer(GetConnectionString(connectionStringPath)));
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
             services.AddScoped<IRepository, Repository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
             services.AddControllersWithViews();
