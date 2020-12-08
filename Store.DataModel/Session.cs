@@ -43,18 +43,22 @@ namespace Store.DataModel
         {
             get => _context.Items.AsQueryable();
         }
-        public void AddCustomer(string name)
+        public ICustomer AddCustomer(string name)
         {
-            _context.Customers.Add(new Customer{ Name = name });
+            var customer = new Customer{ Name = name };
+            _context.Customers.Add(customer);
             _context.SaveChanges();
+            return customer;
         }
-        public void AddItem(string name)
+        public IItem AddItem(string name)
         {
-            _context.Items.Add(new Item { Name = name });
+            var item = new Item { Name = name };
+            _context.Items.Add(item);
             _context.SaveChanges();
+            return item;
         }
 
-        public void AddLocation(string name, Dictionary<int, int> itemCounts)
+        public ILocation AddLocation(string name, Dictionary<int, int> itemCounts)
         {
             var location = new Location { Name = name };
             _context.Locations.Add(location);
@@ -70,8 +74,9 @@ namespace Store.DataModel
                 );
             }
             _context.SaveChanges();
+            return location;
         }
-        public void AddOrder(ICustomer customer, ILocation location, Dictionary<int, int> itemCounts)
+        public IOrder AddOrder(ICustomer customer, ILocation location, Dictionary<int, int> itemCounts)
         {
             var myLocation = _context.Locations.Find(location.Id);
             var order = new Order
@@ -95,6 +100,7 @@ namespace Store.DataModel
                 if (itemL.ItemCount == 0) _context.LocationItems.Remove(itemL);
             }
             _context.SaveChanges();
+            return order;
         }
     }
     public partial class Item : IItem {}
