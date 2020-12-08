@@ -18,6 +18,7 @@ namespace Store.WebApp.Models
         public List<SelectListItem> CustomersSelect;
         public SelectList CustomersSelectList => new SelectList(CustomersSelect);
         [Required]
+        [Display(Name = "Customer Id")]
         public int? CustomerId { get; set; }
         public int? LocationId { get; set; }
         public int CountMax {get; }
