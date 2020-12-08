@@ -13,7 +13,7 @@ namespace Store.DataModel
         // [Key]
         // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get => id; set => id = value; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime Placed { get => placed; set => placed = value; }
         public int CustomerId {get;set;}
         [ForeignKey("CustomerId")]

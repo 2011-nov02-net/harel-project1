@@ -22,7 +22,10 @@
                 Order @Html.DisplayNameFor(model => anOrder.Id)
             </th>
             <th scope="col">
-                @Html.DisplayNameFor(model => anOrder.Placed)
+                Date
+            </th>
+            <th scope="col">
+                Time
             </th>
             <th scope="col">
                 @Html.DisplayNameFor(model => aCustomer.Name)
@@ -40,7 +43,10 @@
                 @Html.DisplayFor(model => order.Id)
             </td>
             <td>
-                @Html.DisplayFor(model => order.Placed)
+                @order.Placed.Date
+            </td>
+            <td>
+                @order.Placed.ToUniversalTime()
             </td>
             <td>
                 @Html.DisplayFor(model => order.Customer.Name)
