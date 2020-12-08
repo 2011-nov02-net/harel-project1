@@ -13,8 +13,8 @@ namespace Store.WebApp.Models
         [HiddenInput]
         public LocationModel Location {get; set;}
         public IEnumerable<CustomerModel> Customers { get; set; }
-        public CustomerModel Customer => Customers.Where(x => 
-            x.Id == Convert.ToInt32(CustomerId)).FirstOrDefault();
+        public CustomerModel Customer => Customers.FirstOrDefault(x => 
+            x.Id == Convert.ToInt32(CustomerId));
         public List<SelectListItem> CustomersSelect;
         public SelectList CustomersSelectList => new SelectList(CustomersSelect);
         [Required]
