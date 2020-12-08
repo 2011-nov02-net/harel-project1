@@ -9,10 +9,10 @@ namespace Store
         IQueryable<ICustomer> Customers {get;}
         IQueryable<ILocation> Locations {get;}
         IQueryable<IItem> Items {get;}
-        void AddItem(string name);
-        void AddCustomer(string name);
-        void AddLocation(string name, Dictionary<int, int> itemCounts);
-        void AddOrder(ICustomer customer, 
+        IItem AddItem(string name);
+        ICustomer AddCustomer(string name);
+        ILocation AddLocation(string name, Dictionary<int, int> itemCounts);
+        IOrder AddOrder(ICustomer customer, 
                       ILocation location, 
                       Dictionary<int, int> itemCounts);
     }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -80,7 +79,6 @@ namespace Store.WebApp.Controllers
             }
             catch (Exception e)
             {
-                // Console.WriteLine(e);
                 _logger.LogError(e, "Reading Add Order Form");
                 try
                 {
@@ -103,32 +101,19 @@ namespace Store.WebApp.Controllers
         {
             return View(_session.Customers
                 .Where(customer => customer.Name.Contains(id))
-                .AsEnumerable());
+                .ToList());
         }
         public IActionResult LocationOrders(int id)
         {
             try
             {
                 var myLocation = _session.Locations.First(x => x.Id == id);
-                //var myOrders   = _session.OrderHistory(myLocation);
-                var myOrders = _session.Orders.ToList().Where(o => o.LocationId == myLocation.Id).AsEnumerable();
-                // ViewData["Location"] = new LocationModel(myLocation, _session.Items);
-                // ViewData["Items"] = _session.Items.ToList().Where(x =>
-                //     myOrders.Any(y =>
-                //         (y as IOrder).ItemCounts.ContainsKey(x.Id) )
-                //     ).Select(x => new ItemModel(x)).AsEnumerable();
-                // return View(myOrders);
-                // ViewBag.location = myLocation;
-                /*
-                var myItems = Model.Select(o => o.Items)
-                .Aggregate((x, y) => x.Concat(y))
-                .Distinct().OrderBy(item => item.Id);
-                */
+                var myOrders = _session.Orders.ToList().Where(o => o.LocationId == myLocation.Id).ToList();
                 var model = new LocationOrdersViewModel(
                     new LocationModel(myLocation, _session.Items),
                     _session.Items.ToList().Where(x => myOrders.Any(y =>
                         (y as IOrder).ItemCounts.ContainsKey(x.Id) ) )
-                        .Select(x => new ItemModel(x)).AsEnumerable(),
+                        .Select(x => new ItemModel(x)).ToList(),
                     myOrders);
                 return View(model);
             }
@@ -143,25 +128,12 @@ namespace Store.WebApp.Controllers
             try
             {
                 var myCustomer = _session.Customers.First(x => x.Id == id);
-                //var myOrders   = _session.OrderHistory(myCustomer);
-                var myOrders = _session.Orders.ToList().Where(o => o.CustomerId == myCustomer.Id).AsEnumerable();
-                // ViewData["Customer"] = new CustomerModel(myCustomer);
-                // ViewData["Items"] = _session.Items.ToList().Where(x =>
-                //     myOrders.Any(y =>
-                //         y.ItemCounts.ContainsKey(x.Id) )
-                //     ).Select(x => new ItemModel(x)).AsEnumerable();
-                // return View(myOrders);
-                // ViewBag.customer = myCustomer;
-                /*
-                var myItems = Model.Select(o => o.Items)
-                .Aggregate((x, y) => x.Concat(y))
-                .Distinct().OrderBy(item => item.Id);
-                */                
+                var myOrders = _session.Orders.ToList().Where(o => o.CustomerId == myCustomer.Id).ToList();       
                 var model = new CustomerOrdersViewModel(
                     new CustomerModel(myCustomer),
                     _session.Items.ToList().Where(x =>
                         myOrders.Any(y => y.ItemCounts.ContainsKey(x.Id) ) )
-                        .Select(x => new ItemModel(x)).AsEnumerable(),
+                        .Select(x => new ItemModel(x)).ToList(),
                     myOrders);
                 return View(model);
             }

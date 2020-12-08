@@ -13,10 +13,9 @@ namespace Store.WebApp.Models
         [HiddenInput]
         public LocationModel Location {get; set;}
         public IEnumerable<CustomerModel> Customers { get; set; }
-        public CustomerModel Customer => Customers.Where(x => 
-            x.Id == Convert.ToInt32(CustomerId)).FirstOrDefault();
-        public List<SelectListItem> CustomersSelect => 
-            Customers.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+        public CustomerModel Customer => Customers.FirstOrDefault(x => 
+            x.Id == Convert.ToInt32(CustomerId));
+        public List<SelectListItem> CustomersSelect;
         public SelectList CustomersSelectList => new SelectList(CustomersSelect);
         [Required]
         public int? CustomerId { get; set; }
@@ -31,6 +30,9 @@ namespace Store.WebApp.Models
             Location = new LocationModel(location, items);
             LocationId = Location.Id;
             CountMax = countMax;
+            CustomersSelect = customers.Select(x => 
+                new SelectListItem(x.Name, x.Id.ToString() )
+            ).ToList();
         }
     }
 }

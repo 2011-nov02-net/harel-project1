@@ -11,12 +11,13 @@
 @if (Model.Any())
 {
 <table class="table">
+    <caption>List of customers whose name contains the search string</caption>
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
