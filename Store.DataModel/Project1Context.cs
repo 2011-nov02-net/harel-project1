@@ -31,7 +31,7 @@ namespace Store.DataModel
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.ToTable("Orders");
-                entity.Property(t => t.Placed).ValueGeneratedOnAdd().HasDefaultValueSql("GETDATE()");
+                entity.Property(t => t.Placed).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
                 entity.HasOne(d => d.Customer).WithMany(p => p.Orders).HasForeignKey(d => d.CustomerId);
                 entity.HasOne(d => d.Location).WithMany(p => p.Orders).HasForeignKey(d => d.LocationId);
             });
