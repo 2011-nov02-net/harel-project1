@@ -53,3 +53,7 @@
 // page form should contain customer selection dropdown
 // contain next to each customer a link to display the customer order history
 *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -53,3 +53,7 @@ search bar to search for customers at top (as a form) + submit button
 List out locations in main content with links for placing an order 
     and viewing order history
 *@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
