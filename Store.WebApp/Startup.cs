@@ -12,13 +12,13 @@ namespace Store.WebApp
 {
     public class Startup
     {
-        // const string connectionStringPath = "../connectionString.txt";
-        // static string GetConnectionString(string path)
-        // {
-        //     string connectionString;
-        //     connectionString = File.ReadAllText(path);
-        //     return connectionString;
-        // }
+        const string connectionStringPath = "../connectionString.txt";
+        static string GetConnectionString(string path)
+        {
+            string connectionString;
+            connectionString = File.ReadAllText(path);
+            return connectionString;
+        }
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Environment = env;
@@ -33,8 +33,8 @@ namespace Store.WebApp
             //services.AddLogging(lb => lb.AddEventLog());
             services.AddDbContext<Project1Context>(optionsBuilder => 
                 optionsBuilder.UseSqlServer(
-                    Configuration.GetConnectionString("SqlServer")
-                    // GetConnectionString(connectionStringPath)
+                    // Configuration.GetConnectionString("SqlServer")
+                    GetConnectionString(connectionStringPath)
                     ));
             services.AddScoped<IRepository, Repository>();
             services.AddMvc(option => option.EnableEndpointRouting = false);
